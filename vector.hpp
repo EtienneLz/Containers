@@ -33,6 +33,7 @@ namespace ft
 
             explicit vector(size_type n, const value_type& val = value_type(),
                 const allocator_type& alloc = allocator_type()) {
+                _size = n;
                 _alloc = alloc;
                 _capacity = _size;
                 _array = alloc.allocate(_size);
@@ -198,7 +199,8 @@ namespace ft
                 if (_size >= _capacity) {
                     if (_capacity == 0)
                         _capacity = 1;
-                    _capacity *= 2;
+                    else
+                        _capacity *= 2;
                     realloc (_capacity);
                 }
                 _size++;
@@ -206,6 +208,8 @@ namespace ft
             }
 
             void    pop_back() {
+                if (_size == 0)
+                    return ;
                 _alloc.destroy(&_array[_size - 1]);
                 _size--;
             }
