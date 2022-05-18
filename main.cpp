@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include <string>
 #include <deque>
 #if 1 //CREATE A REAL STL EXAMPLE
@@ -113,4 +113,30 @@ int main(int argc, char** argv) {
 	}
 	std::cout << std::endl;
 	return (0);
+}*/
+
+#include "vector.hpp"
+
+#include <iostream>
+
+int	main(void) {
+	ft::vector<int> vec;
+
+	std::cout << vec.size() << std::endl << std::endl;
+
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
+	vec.push_back(5);
+	vec.push_back(6);
+	vec.push_back(7);
+	vec.push_back(8);
+	vec.push_back(9);
+
+	for (int i(0); i < 9; i++) {
+		std::cout << vec[i] << std::endl;
+	}
+
+	return 0;
 }
