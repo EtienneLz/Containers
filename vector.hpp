@@ -196,6 +196,8 @@ namespace ft
 
             void    push_back (const value_type& val) {
                 if (_size >= _capacity) {
+                    if (_capacity == 0)
+                        _capacity = 1;
                     _capacity *= 2;
                     realloc (_capacity);
                 }
