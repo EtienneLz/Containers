@@ -2,7 +2,7 @@
 # define VECTOR_HPP
 
 #include <memory>
-#include <iterator>
+#include "side_func/iterators.hpp"
 
 namespace ft
 {
@@ -22,6 +22,7 @@ namespace ft
             typedef typename Alloc::const_reference const_reference;
             typedef typename Alloc::pointer         pointer;
             typedef typename Alloc::const_pointer   const_pointer;
+            typedef typename Alloc::difference_type difference_type;
             typedef typename std::size_t            size_type;
 
             explicit vector(const allocator_type& alloc = allocator_type()) {
@@ -36,7 +37,7 @@ namespace ft
                 _size = n;
                 _alloc = alloc;
                 _capacity = _size;
-                _array = alloc.allocate(_size);
+                _array = _alloc.allocate(_size);
                 assign(n, val);
             }
 
@@ -91,16 +92,6 @@ namespace ft
                 _array = tmp;
                 _alloc = tmp_alloc;
             }
-
-            void    assign(const size_type n, const T& val) {
-                size_type i(0);
-                while (i < n) {
-                    _alloc.construct(&_array[i], val);
-                }
-                _size = n;
-            }
-
-
    /*
         ELEMENT ACCESS
         at *
@@ -140,12 +131,28 @@ namespace ft
             
    /*
         ITERATORS
-        begin
-        end
+        begin 
+        end 
         rbegin
         rend
     */
+            typedef ft::iterator<T>   iterator;    
+            iterator    begin() {
+                return iterator(_array);
+            }
 
+            iterator    end() {
+                return iterator(_array + _size);
+            }
+
+            typedef ft::reverse_iterator<T>   reverse_iterator;    
+            reverse_iterator    rbegin() {
+                return reverse_iterator(_array + _size - 1);
+            }
+
+            reverse_iterator    rend() {
+                return reverse_iterator(_array - 1);
+            }
    /*
         CAPACITY
         empty *
@@ -188,11 +195,35 @@ namespace ft
         resize *
         swap
     */
+            /*template    <class InputIterator>
+            void    assign (InputIterator first, InputIterator last) {
+                this->clear();
+                if (ft::distance(first, last) > static_cast<difference_type>(_capacity))
+                    this->reserve(std::distance(first, last));
+                for (InputIterator it; it != it.end(); it++)
+                    push_back(*it);
+            }*/
+
+            void    assign(size_type n, const value_type& val) {
+                this->clear();
+                if (n > _capacity)
+                    this->reserve(n);
+                for (size_type i(0); i < n; i++)
+                    push_back(val);
+            }
+
             void    clear() {
                 for (size_type i(0); i < _size; i++) {
                     _alloc.destroy(&_array[i]);
                 }
                 _size = 0;
+            }
+
+            iterator insert(iterator position, const value_type& val) {
+                iterator it = begin();
+                while (it != position;)
+                    it++;
+                
             }
 
             void    push_back (const value_type& val) {
