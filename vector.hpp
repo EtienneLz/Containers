@@ -1,8 +1,12 @@
 #ifndef VECTOR_HPP  
 # define VECTOR_HPP
 
-#include <memory>
-#include "side_func/iterators.hpp"
+# include <memory>
+# include <iostream>
+# include "utils/iterators.hpp"
+# include "utils/reverse_iterators.hpp"
+# include "utils/enable_if.hpp"
+# include "utils/is_integral.hpp"
 
 namespace ft
 {
@@ -24,6 +28,8 @@ namespace ft
             typedef typename Alloc::const_pointer   const_pointer;
             typedef typename Alloc::difference_type difference_type;
             typedef typename std::size_t            size_type;
+            typedef ft::iterator<T>                 iterator;
+            typedef ft::reverse_iterator<T>         reverse_iterator;
 
             explicit vector(const allocator_type& alloc = allocator_type()) {
                 _alloc = alloc;
@@ -41,11 +47,15 @@ namespace ft
                 assign(n, val);
             }
 
-            /*template <class InputIterator>
-            vector<T>(InputIterator first, InputIterator last,
+            template <class InputIterator>
+            vector<T>(InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last,
                 const allocator_type& alloc = allocator_type()) {
-                
-            }*/
+                _size = static_cast<size_type>(ft::distance(first, last));
+                _alloc = alloc;
+                _capacity = _size;
+                _array = _alloc.allocate(_size);
+                assign(first, last);
+            }
 
             ~vector(void) {
                 for (size_type i(0); i < _size; i++)
@@ -63,6 +73,7 @@ namespace ft
                 _array = _alloc.allocate(_size);
                 for (size_type i(0); i < _size; i++)
                     _alloc.construct(&_array[i], rhs[i]);
+                return *this;
             }
 
             allocator_type get_allocator(void) const {
@@ -135,8 +146,7 @@ namespace ft
         end 
         rbegin
         rend
-    */
-            typedef ft::iterator<T>   iterator;    
+    */  
             iterator    begin() {
                 return iterator(_array);
             }
@@ -144,8 +154,7 @@ namespace ft
             iterator    end() {
                 return iterator(_array + _size);
             }
-
-            typedef ft::reverse_iterator<T>   reverse_iterator;    
+   
             reverse_iterator    rbegin() {
                 return reverse_iterator(_array + _size - 1);
             }
@@ -195,21 +204,21 @@ namespace ft
         resize *
         swap
     */
-            /*template    <class InputIterator>
-            void    assign (InputIterator first, InputIterator last) {
-                this->clear();
-                if (ft::distance(first, last) > static_cast<difference_type>(_capacity))
-                    this->reserve(std::distance(first, last));
-                for (InputIterator it; it != it.end(); it++)
-                    push_back(*it);
-            }*/
-
             void    assign(size_type n, const value_type& val) {
                 this->clear();
                 if (n > _capacity)
                     this->reserve(n);
                 for (size_type i(0); i < n; i++)
                     push_back(val);
+            }
+
+            template    <class InputIterator>
+            void    assign (InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last) {
+                this->clear();
+                if (ft::distance(first, last) > static_cast<difference_type>(_capacity))
+                    this->reserve(ft::distance(first, last));
+                for (InputIterator it = first; it != last; it++)
+                    push_back(*it);
             }
 
             void    clear() {
@@ -220,10 +229,20 @@ namespace ft
             }
 
             iterator insert(iterator position, const value_type& val) {
-                iterator it = begin();
-                while (it != position;)
-                    it++;
-                
+                if (_size == _capacity)
+                    reserve(_capacity *= 2);
+                size_type   tmp_pos;
+                tmp_pos = _size;
+                iterator it = end();
+                _alloc.construct(&_array[tmp_pos], _array[tmp_pos - 1]);
+                while (it != position) {
+                    it--;
+                    tmp_pos--;
+                    _array[tmp_pos] = _array[tmp_pos - 1];
+                }
+                _array[tmp_pos] = val;
+                _size++;
+                return it;
             }
 
             void    push_back (const value_type& val) {
@@ -263,12 +282,29 @@ namespace ft
                 }
             }
    
-            class	OutOfRange: public std::exception {
-		        public:
-			    virtual const char* what() const throw() {
-				    return ("\033[0;35m>>>EXCEPTION:\033[0mVector: Out of range");
-			    }
-	        };
+            void    swap(vector &x) {
+                if (this == &x)
+                    return ;
+                Alloc       alloc_tmp;
+                size_type   size_tmp;
+                size_type   capacity_tmp;
+                T           *array_tmp;
+
+                alloc_tmp = x._alloc;
+                array_tmp = x._array;
+                capacity_tmp = x._capacity;
+                size_tmp = x._size;
+
+                x._alloc = this->_alloc;
+                x._array = this->_array;
+                x._capacity = this->_capacity;
+                x._size = this->_size;
+
+                this->_alloc = alloc_tmp;
+                this->_array = array_tmp;
+                this->_capacity = capacity_tmp;
+                this->_size = size_tmp;
+            }
     };
     /*
         NON MEMBER FUNCTIONS

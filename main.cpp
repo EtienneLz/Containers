@@ -122,6 +122,23 @@ int main(int argc, char** argv) {
 
 int	main(void) {
 	{
+  		// constructors used in the same order as described above:
+  		ft::vector<int> first;                                // empty vector of ints
+  		ft::vector<int> second (4,100);                       // four ints with value 100
+  		ft::vector<int> third (second.begin(),second.end());  // iterating through second
+  		ft::vector<int> fourth (third);                       // a copy of third
+
+  		// the iterator constructor can also be used to construct from arrays:
+  		int myints[] = {16,2,77,29};
+  		ft::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+
+  		std::cout << "The contents of fifth are:";
+  		for (ft::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+    		std::cout << ' ' << *it;
+  		std::cout << '\n';
+	}
+	std::cout << std::endl;
+	{
 		ft::vector<int> vec;
 
 		std::cout << "Size: " << vec.size() << std::endl << std::endl;
@@ -322,7 +339,8 @@ int	main(void) {
     		std::cout << ' ' << *it;
   		std::cout << '\n';
 	}
-	/*{
+	std::cout << std::endl;
+	{
   		ft::vector<int> first;
   		ft::vector<int> second;
   		ft::vector<int> third;
@@ -330,7 +348,7 @@ int	main(void) {
   		first.assign (7,100);             // 7 ints with a value of 100
 
   		ft::vector<int>::iterator it;
-  		it=first.begin()+1;
+  		it=first.begin();
 
   		second.assign (it,first.end()-1); // the 5 central values of first
 
@@ -340,6 +358,48 @@ int	main(void) {
   		std::cout << "Size of first: " << int (first.size()) << '\n';
   		std::cout << "Size of second: " << int (second.size()) << '\n';
   		std::cout << "Size of third: " << int (third.size()) << '\n';
-	}*/
+	}
+	std::cout << std::endl;
+	{
+  		ft::vector<int> foo (3,100);   // three ints with a value of 100
+  		ft::vector<int> bar (5,200);   // five ints with a value of 200
+
+		std::cout << "foo contains:";
+  		for (unsigned i=0; i<foo.size(); i++)
+    		std::cout << ' ' << foo[i];
+  		std::cout << '\n';
+
+  		std::cout << "bar contains:";
+  		for (unsigned i=0; i<bar.size(); i++)
+    		std::cout << ' ' << bar[i];
+
+		std::cout << std::endl << "Swapping" << std::endl;
+  		foo.swap(bar);
+
+  		std::cout << "foo contains:";
+  		for (unsigned i=0; i<foo.size(); i++)
+    		std::cout << ' ' << foo[i];
+  		std::cout << '\n';
+
+  		std::cout << "bar contains:";
+  		for (unsigned i=0; i<bar.size(); i++)
+    		std::cout << ' ' << bar[i];
+  		std::cout << '\n';
+}
+{
+	ft::vector<int> vec(10, 50);
+	ft::vector<int>::iterator it = vec.begin()+3;
+
+	std::cout << "myvector contains:";
+  		for (ft::vector<int>::iterator it2 = vec.begin(); it2 != vec.end(); ++it2)
+    		std::cout << ' ' << *it2;
+  		std::cout << '\n';
+	vec.insert(it, 15);
+	std::cout << "myvector contains:";
+  		for (ft::vector<int>::iterator it2 = vec.begin(); it2 != vec.end(); ++it2)
+    		std::cout << ' ' << *it2;
+  		std::cout << '\n';
+}
+
 	return 0;
 }
