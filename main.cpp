@@ -116,7 +116,9 @@ int main(int argc, char** argv) {
 }*/
 
 #include "vector.hpp"
+#include "stack.hpp"
 #include <vector>
+#include <stack>
 
 #include <iostream>
 
@@ -240,8 +242,8 @@ int	main(void) {
 		for (int i=0; i<10; i++) myints.push_back(i);
 		std::cout << "1. size: " << myints.size() << '\n';
 
-		//myints.insert (myints.end(),10,100);
-		//std::cout << "2. size: " << myints.size() << '\n';
+		myints.insert (myints.end(),10,100);
+		std::cout << "2. size: " << myints.size() << '\n';
 
 		myints.pop_back();
 		std::cout << "3. size: " << myints.size() << '\n';
@@ -385,30 +387,192 @@ int	main(void) {
   		for (unsigned i=0; i<bar.size(); i++)
     		std::cout << ' ' << bar[i];
   		std::cout << '\n';
+
+		ft::swap(foo, bar);
+
+		std::cout << std::endl << "Swapping" << std::endl;
+
+  		std::cout << "foo contains:";
+  		for (unsigned i=0; i<foo.size(); i++)
+    		std::cout << ' ' << foo[i];
+  		std::cout << '\n';
+
+  		std::cout << "bar contains:";
+  		for (unsigned i=0; i<bar.size(); i++)
+    		std::cout << ' ' << bar[i];
+  		std::cout << '\n';
+	}
+	std::cout << std::endl;
+	{
+		ft::vector<int> myvector (3,100);
+  		ft::vector<int>::iterator it;
+
+  		it = myvector.begin();
+  		it = myvector.insert ( it , 200 );
+
+		it = myvector.begin();
+		myvector.insert (it , 20 );
+		std::cout << "myvector contains:";
+  		for (it=myvector.begin(); it<myvector.end(); it++)
+    		std::cout << ' ' << *it;
+  		std::cout << '\n';
+		it = myvector.begin();
+  		myvector.insert (it,2,300);
+		it = myvector.begin()+7;
+		myvector.insert (it,2,44);
+  		it = myvector.begin();
+
+		std::cout << "myvector contains:";
+  		for (it=myvector.begin(); it<myvector.end(); it++)
+    		std::cout << ' ' << *it;
+  		std::cout << '\n';
+		it = myvector.begin();
+
+  		ft::vector<int> anothervector (2,400);
+  		myvector.insert (it+2,anothervector.begin(),anothervector.end());
+
+  		int myarray [] = { 501,502,503 };
+  		myvector.insert (myvector.begin(), myarray, myarray+3);
+
+  		std::cout << "myvector contains:";
+  		for (it=myvector.begin(); it<myvector.end(); it++)
+    		std::cout << ' ' << *it;
+  		std::cout << '\n';
+		  std::cout << myvector.size() << std::endl;
+	}
+	std::cout << std::endl;
+	{
+  		ft::vector<int> myvector;
+
+  		// set some values (from 1 to 10)
+  		for (int i=1; i<=10; i++) myvector.push_back(i);
+
+  		// erase the 6th element
+  		myvector.erase (myvector.begin()+5);
+
+		std::cout << "myvector contains:";
+  		for (unsigned i=0; i<myvector.size(); ++i)
+    		std::cout << ' ' << myvector[i];
+  		std::cout << '\n';
+
+  		// erase the first 3 elements:
+  		myvector.erase (myvector.begin()+3,myvector.begin()+6);
+
+  		std::cout << "myvector contains:";
+  		for (unsigned i=0; i<myvector.size(); ++i)
+    		std::cout << ' ' << myvector[i];
+  		std::cout << '\n';
+	}
+	std::cout << std::endl;
+	{
+		ft::vector<int> myvector1;
+
+  		// set some values (from 1 to 10)
+  		for (int i=1; i<=10; i++) myvector1.push_back(i);
+		ft::vector<int> myvector2;
+
+  		// set some values (from 1 to 10)
+  		for (int i=1; i<=10; i++) myvector2.push_back(i);
+		ft::vector<ft::vector<int> > myvector;
+		myvector.push_back(myvector1);
+		myvector.push_back(myvector2);
+	}
+	std::cout << std::endl;
+	{
+  		ft::vector<int> foo (3,100);   // three ints with a value of 100
+  		ft::vector<int> bar (2,200);   // two ints with a value of 200
+
+  		if (foo==bar) std::cout << "foo and bar are equal\n";
+  		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+  		if (foo< bar) std::cout << "foo is less than bar\n";
+  		if (foo> bar) std::cout << "foo is greater than bar\n";
+  		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+  		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+		
+		std::cout << std::endl;
+		ft::vector<int> foo2 (2,200);   // three ints with a value of 100
+  		ft::vector<int> bar2 (2,200);   // two ints with a value of 200
+
+  		if (foo2==bar2) std::cout << "foo2 and bar2 are equal\n";
+  		if (foo2!=bar2) std::cout << "foo2 and bar2 are not equal\n";
+  		if (foo2< bar2) std::cout << "foo2 is less than bar2\n";
+  		if (foo2> bar2) std::cout << "foo2 is greater than bar2\n";
+  		if (foo2<=bar2) std::cout << "foo2 is less than or equal to bar2\n";
+  		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";
+	}
+	std::cout << std::endl << "=====STACK TEST=====" << std::endl;
+	{
+  		ft::stack<int> mystack;
+  		int sum (0);
+
+  		for (int i=1;i<=10;i++) mystack.push(i);
+
+  		while (!mystack.empty())
+  		{
+     		sum += mystack.top();
+    		mystack.pop();
+  		}
+
+  		std::cout << "total: " << sum << '\n';
+	}
+	std::cout << std::endl;
+	{
+  		ft::stack<int> myints;
+  		std::cout << "0. size: " << myints.size() << '\n';
+
+  		for (int i=0; i<5; i++) myints.push(i);
+  		std::cout << "1. size: " << myints.size() << '\n';
+
+  		myints.pop();
+  		std::cout << "2. size: " << myints.size() << '\n';
+	}
+	std::cout << std::endl;
+	{
+  		ft::stack<int> mystack;
+
+  		mystack.push(10);
+  		mystack.push(20);
+
+  		mystack.top() -= 5;
+
+  		std::cout << "mystack.top() is now " << mystack.top() << '\n';
 }
-{
-	ft::vector<int> myvector (3,100);
-  	ft::vector<int>::iterator it;
+	std::cout << std::endl;
+	{
+  		ft::stack<int> mystack;
 
-  	it = myvector.begin();
-  	it = myvector.insert ( it , 200 );
+  		for (int i=0; i<5; ++i) mystack.push(i);
 
-  	myvector.insert (it,2,300);
+  		std::cout << "Popping out elements...";
+  		while (!mystack.empty())
+  		{
+     		std::cout << ' ' << mystack.top();
+     		mystack.pop();
+  		}
+  		std::cout << '\n';
+	}
+	std::cout << std::endl;
+	/*{
+  		std::vector<int> foo (3,100);   // three ints with a value of 100
+  		std::vector<int> bar (2,200);   // two ints with a value of 200
 
-  	// "it" no longer valid, get a new one:
-  	it = myvector.begin();
+  		if (foo==bar) std::cout << "foo and bar are equal\n";
+  		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+  		if (foo< bar) std::cout << "foo is less than bar\n";
+  		if (foo> bar) std::cout << "foo is greater than bar\n";
+  		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+  		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+		
+		std::cout << std::endl;
+		std::vector<int> foo2 (2,200);   // three ints with a value of 100
+  		std::vector<int> bar2 (2,200);   // two ints with a value of 200
 
-  	ft::vector<int> anothervector (2,400);
-  	//myvector.insert (it+2,anothervector.begin(),anothervector.end());
-
-  	//int myarray [] = { 501,502,503 };
-  	//myvector.insert (myvector.begin(), myarray, myarray+3);
-
-  	std::cout << "myvector contains:";
-  	for (it=myvector.begin(); it<myvector.end(); it++)
-    	std::cout << ' ' << *it;
-  	std::cout << '\n';
-}
-
+  		if (foo2==bar2) std::cout << "foo2 and bar2 are equal\n";
+  		if (foo2!=bar2) std::cout << "foo2 and bar2 are not equal\n";
+  		if (foo2< bar2) std::cout << "foo2 is less than bar2\n";
+  		if (foo2> bar2) std::cout << "foo2 is greater than bar2\n";
+  		if (foo2<=bar2) std::cout << "foo2 is less than or equal to bar2\n";
+  		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";
+	}*/
 	return 0;
 }

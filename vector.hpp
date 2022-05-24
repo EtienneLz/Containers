@@ -7,6 +7,7 @@
 # include "utils/reverse_iterators.hpp"
 # include "utils/enable_if.hpp"
 # include "utils/is_integral.hpp"
+# include "utils/lexicographical_compare.hpp"
 
 namespace ft
 {
@@ -139,6 +140,10 @@ namespace ft
                 return _array[_size - 1];
             }
 
+            reference   back() const {
+                return _array[_size - 1];
+            }
+
             
    /*
         ITERATORS
@@ -195,14 +200,14 @@ namespace ft
 
    /*
         MODIFIERS
-        assign
+        assign *
         clear *
-        insert
-        erase
+        insert *
+        erase *
         push_back *
         pop_back *
         resize *
-        swap
+        swap *
     */
             void    assign(size_type n, const value_type& val) {
                 this->clear();
@@ -229,7 +234,7 @@ namespace ft
             }
 
             iterator insert(iterator position, const value_type& val) {
-                iterator it = begin();
+                iterator            it = begin();
                 ft::difference_type diff;
                 size_type           tmp_pos;
                 diff = ft::distance(it, position);
@@ -248,35 +253,97 @@ namespace ft
                 }
                 _array[tmp_pos] = val;
                 _size++;
-                /*for (iterator it2=begin(); it2<end(); it2++)
-    	            std::cout << ' ' << *it2;*/
                 return it;
             }
 
             void insert (iterator position, size_type n, const value_type& val) {
-                iterator it = begin();
-                ft::difference_type   diff;
+                iterator            it = begin();
+                ft::difference_type diff;
                 diff = ft::distance(it, position);
-                std::cout << "Size: " << _size << "Capacity :" << _capacity << std::endl;
                 if (_size + n >= _capacity)
-                {
                     realloc(_size + n);
-                    std::cout << "Size: " << _size << "Capacity :" << _capacity << std::endl;
-                }
                 size_type   tmp_pos;
                 tmp_pos = _size;
                 diff = static_cast<ft::difference_type>(_size) - diff;
                 while (diff) {
                     diff--;
-                    tmp_pos--;
                     if (tmp_pos)
-                        _array[tmp_pos + n] = _array[tmp_pos - 1];
+                        _array[tmp_pos + n - 1] = _array[tmp_pos - 1];
+                    tmp_pos--;
                 }
                 for (size_type i = 0; i < n; i++) {
                     _array[tmp_pos] = val;
                     tmp_pos++;
                 }
                 _size += n;
+            }
+
+            template <class InputIterator>
+            void insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last) {
+                iterator            it = begin();
+                ft::difference_type diff;
+                size_type           n;
+                n = static_cast<size_type>(ft::distance(first, last));
+                diff = ft::distance(it, position);
+                if (_size + n >= _capacity)
+                    realloc(_size + n);
+                size_type   tmp_pos;
+                tmp_pos = _size;
+                diff = static_cast<ft::difference_type>(_size) - diff;
+                while (diff) {
+                    diff--;
+                    if (tmp_pos)
+                        _array[tmp_pos + n - 1] = _array[tmp_pos - 1];
+                    tmp_pos--;
+                }
+                for (size_type i = 0; i < n; i++) {
+                    _array[tmp_pos] = *first;
+                    first++;
+                    tmp_pos++;
+                }
+                _size += n;
+            }
+
+            iterator erase (iterator position) {
+                iterator            it = begin();
+                ft::difference_type diff;
+                size_type           tmp_pos;
+                diff = ft::distance(it, position);
+                tmp_pos = static_cast<size_type>(diff);
+                _alloc.construct(&_array[tmp_pos], _array[tmp_pos - 1]);
+                it = end();
+                while (diff < static_cast<ft::difference_type>(_size)) {
+                    diff++;
+                    it--;
+                    _array[tmp_pos] = _array[tmp_pos + 1];
+                    tmp_pos++;
+                }
+                _alloc.destroy(&_array[tmp_pos]);
+                _size--;
+                return it;
+            }
+
+            iterator erase (iterator first, iterator last) {
+                iterator            it = begin();
+                ft::difference_type diff;
+                size_type           n;
+                n = static_cast<size_type>(ft::distance(first, last));
+                diff = ft::distance(it, first);
+                size_type   tmp_pos;
+                tmp_pos = static_cast<size_type>(diff);
+                it = end();
+                while (diff < static_cast<difference_type>(_size - n)) {
+                    _array[tmp_pos] = _array[tmp_pos + n];
+                    tmp_pos++;
+                    diff++;
+                    it--;
+                }
+                for (size_type i = 0; i < n; i++) {
+                    _alloc.destroy(&_array[tmp_pos]);
+                    tmp_pos++;
+                }
+                _size -= n;
+                return it;
             }
 
             void    push_back (const value_type& val) {
@@ -342,15 +409,57 @@ namespace ft
     };
     /*
         NON MEMBER FUNCTIONS
-        operator==
-        operator!=
-        operator<
-        operator<=
-        operator>=
-        operator>=
+        operator== *
+        operator!= *
+        operator< *
+        operator<= *
+        operator>= *
+        operator>= *
 
-        std::swap
+        std::swap *
     */
+
+    template <class T, class Alloc>
+    bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+        if (lhs.size() == rhs.size()) {
+            for (size_t i = 0; i < lhs.size(); i++)
+                if (lhs[i] != rhs[i])
+                    return false;
+        }
+        else
+            return false;
+        return true;
+    }
+
+    template <class T, class Alloc>
+    bool operator < (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+
+    template <class T, class Alloc>
+    bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+        return !(lhs == rhs);
+    }
+
+    template <class T, class Alloc>
+    bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+        return !(rhs < lhs);
+    }
+
+    template <class T, class Alloc>
+    bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+        return rhs < lhs;
+    }
+
+    template <class T, class Alloc>
+    bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+        return !(lhs < rhs);
+    }
+
+    template <class T, class Alloc>
+    void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y) {
+        x.swap(y);
+    }
 };
 
 #endif
