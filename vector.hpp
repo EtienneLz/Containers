@@ -229,20 +229,54 @@ namespace ft
             }
 
             iterator insert(iterator position, const value_type& val) {
+                iterator it = begin();
+                ft::difference_type diff;
+                size_type           tmp_pos;
+                diff = ft::distance(it, position);
                 if (_size == _capacity)
                     reserve(_capacity *= 2);
-                size_type   tmp_pos;
                 tmp_pos = _size;
-                iterator it = end();
                 _alloc.construct(&_array[tmp_pos], _array[tmp_pos - 1]);
-                while (it != position) {
-                    it--;
+                diff = static_cast<ft::difference_type>(_size) - diff;
+                it = end();
+                while (diff) {
+                    diff--;
                     tmp_pos--;
-                    _array[tmp_pos] = _array[tmp_pos - 1];
+                    it--;
+                    if (tmp_pos)
+                        _array[tmp_pos] = _array[tmp_pos - 1];
                 }
                 _array[tmp_pos] = val;
                 _size++;
+                /*for (iterator it2=begin(); it2<end(); it2++)
+    	            std::cout << ' ' << *it2;*/
                 return it;
+            }
+
+            void insert (iterator position, size_type n, const value_type& val) {
+                iterator it = begin();
+                ft::difference_type   diff;
+                diff = ft::distance(it, position);
+                std::cout << "Size: " << _size << "Capacity :" << _capacity << std::endl;
+                if (_size + n >= _capacity)
+                {
+                    realloc(_size + n);
+                    std::cout << "Size: " << _size << "Capacity :" << _capacity << std::endl;
+                }
+                size_type   tmp_pos;
+                tmp_pos = _size;
+                diff = static_cast<ft::difference_type>(_size) - diff;
+                while (diff) {
+                    diff--;
+                    tmp_pos--;
+                    if (tmp_pos)
+                        _array[tmp_pos + n] = _array[tmp_pos - 1];
+                }
+                for (size_type i = 0; i < n; i++) {
+                    _array[tmp_pos] = val;
+                    tmp_pos++;
+                }
+                _size += n;
             }
 
             void    push_back (const value_type& val) {
