@@ -76,7 +76,7 @@ namespace ft
         operator>= *
     */
 
-    template <class T, class Container>
+    /*template <class T, class Container>
     bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
         return lhs._underlying_container == rhs._underlying_container;
     }
@@ -104,7 +104,7 @@ namespace ft
     template <class T, class Container>
     bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
         return !(lhs < rhs);
-    }
+    }*/
 
 };
 
