@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
 #include <iostream>
 
 int	main(void) {
-	{
+	/*{
   		// constructors used in the same order as described above:
   		ft::vector<int> first;                                // empty vector of ints
   		ft::vector<int> second (4,100);                       // four ints with value 100
@@ -499,6 +499,8 @@ int	main(void) {
   		if (foo2> bar2) std::cout << "foo2 is greater than bar2\n";
   		if (foo2<=bar2) std::cout << "foo2 is less than or equal to bar2\n";
   		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";
+
+		ft::stack<int> test;
 	}
 	std::cout << std::endl << "=====STACK TEST=====" << std::endl;
 	{
@@ -550,11 +552,18 @@ int	main(void) {
      		mystack.pop();
   		}
   		std::cout << '\n';
-	}
+	}*/
 	std::cout << std::endl;
-	/*{
-  		std::vector<int> foo (3,100);   // three ints with a value of 100
-  		std::vector<int> bar (2,200);   // two ints with a value of 200
+	{
+  		ft::stack<int> foo;   // three ints with a value of 100
+  		//ft::stack<int> bar;   // two ints with a value of 200
+
+		/*foo.push(1);
+		foo.push(2);
+		foo.push(3);
+		bar.push(4);
+		bar.push(5);
+		bar.push(6);
 
   		if (foo==bar) std::cout << "foo and bar are equal\n";
   		if (foo!=bar) std::cout << "foo and bar are not equal\n";
@@ -564,15 +573,22 @@ int	main(void) {
   		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
 		
 		std::cout << std::endl;
-		std::vector<int> foo2 (2,200);   // three ints with a value of 100
-  		std::vector<int> bar2 (2,200);   // two ints with a value of 200
+		ft::stack<int> foo2;   // three ints with a value of 100
+  		ft::stack<int> bar2;   // two ints with a value of 200
+
+		foo2.push(1);
+		foo2.push(2);
+		foo2.push(3);
+		bar2.push(1);
+		bar2.push(2);
+		bar2.push(3);
 
   		if (foo2==bar2) std::cout << "foo2 and bar2 are equal\n";
   		if (foo2!=bar2) std::cout << "foo2 and bar2 are not equal\n";
   		if (foo2< bar2) std::cout << "foo2 is less than bar2\n";
   		if (foo2> bar2) std::cout << "foo2 is greater than bar2\n";
   		if (foo2<=bar2) std::cout << "foo2 is less than or equal to bar2\n";
-  		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";
-	}*/
+  		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";*/
+	}
 	return 0;
 }

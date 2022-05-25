@@ -30,13 +30,16 @@ namespace ft
             typedef typename Alloc::difference_type difference_type;
             typedef typename std::size_t            size_type;
             typedef ft::iterator<T>                 iterator;
+            typedef ft::const_iterator<T>           const_iterator;
             typedef ft::reverse_iterator<T>         reverse_iterator;
 
             explicit vector(const allocator_type& alloc = allocator_type()) {
                 _alloc = alloc;
                 _size = 0;
+                _array = NULL;
                 _array = _alloc.allocate(0);
                 _capacity = 0;
+                std::cout << "Oskour\n";
             }
 
             explicit vector(size_type n, const value_type& val = value_type(),
@@ -49,7 +52,7 @@ namespace ft
             }
 
             template <class InputIterator>
-            vector<T>(InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last,
+            vector(InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last,
                 const allocator_type& alloc = allocator_type()) {
                 _size = static_cast<size_type>(ft::distance(first, last));
                 _alloc = alloc;
@@ -58,10 +61,13 @@ namespace ft
                 assign(first, last);
             }
 
-            ~vector(void) {
-                for (size_type i(0); i < _size; i++)
+            ~vector() {
+                for (size_type i(0); i < _size; i++) {
                     _alloc.destroy(&_array[i]);
+                }
                 _alloc.deallocate(_array, _capacity);
+                _array = NULL;
+                std::cout << "Alhed\n";
             }
 
             vector(const vector<T>& src) {
@@ -72,6 +78,7 @@ namespace ft
                 _size = rhs._size;
                 _capacity = rhs._capacity;
                 _array = _alloc.allocate(_size);
+                std::cout << "ICI" << std::endl;
                 for (size_type i(0); i < _size; i++)
                     _alloc.construct(&_array[i], rhs[i]);
                 return *this;
@@ -80,6 +87,7 @@ namespace ft
             allocator_type get_allocator(void) const {
                 return Alloc();
             }
+
         private :
             T*          _array;
             Alloc       _alloc;
@@ -167,6 +175,15 @@ namespace ft
             reverse_iterator    rend() {
                 return reverse_iterator(_array - 1);
             }
+
+            const_iterator    begin() const {
+                return const_iterator(_array);
+            }
+
+            const_iterator    end() const {
+                return const_iterator(_array + _size);
+            }
+   
    /*
         CAPACITY
         empty *
@@ -437,18 +454,18 @@ namespace ft
     }
 
     template <class T, class Alloc>
-    bool operator!= (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs) {
+    bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
         return !(lhs == rhs);
     }
 
     template <class T, class Alloc>
-    bool operator<= (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs) {
+    bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
         return !(rhs < lhs);
     }
 
     template <class T, class Alloc>
     bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
-        return rhs < lhs;
+        return (rhs < lhs);
     }
 
     template <class T, class Alloc>

@@ -5,7 +5,7 @@
 
 namespace ft {
     template <class T>
-    class  iterator {
+    struct  iterator {
         public :
         typedef T                                  value_type;
         typedef ptrdiff_t                          difference_type;
@@ -90,6 +90,10 @@ namespace ft {
             return _point;
         }
 
+        const pointer     operator->() const {
+            return _point;
+        }
+
         reference   operator*() {
             return *_point;
         }
@@ -115,6 +119,125 @@ namespace ft {
         }
 
         friend bool        operator<=(const iterator<T> &lhs, const iterator<T> &rhs) {
+            return lhs._point <= rhs._point;
+        }
+    };
+
+    template <class T>
+    struct  const_iterator {
+        public :
+        typedef T                                  value_type;
+        typedef ptrdiff_t                          difference_type;
+        typedef T*                                 pointer;
+        typedef T&                                 reference;
+        typedef std::random_access_iterator_tag    iterator_category;
+
+        private:
+            pointer    _point;
+
+
+        public:
+        const_iterator(void) {
+            _point = NULL;
+        }
+
+        const_iterator(pointer p) {
+            _point = p;
+        }
+
+        ~const_iterator() {}
+
+        const_iterator(const iterator<T> &src) {
+            *this = src;
+        }
+
+        const_iterator& operator=(const iterator<T> &rhs) {
+            if (this != &rhs)
+                _point = rhs._point;
+            return *this;
+        }
+
+        const_iterator&   operator++() {
+            _point++;
+            return *this;
+        }
+
+        const_iterator    operator++(int) {
+            pointer tmp;
+            tmp = _point;
+            _point++;
+
+            return tmp;
+        }
+
+        const_iterator&   operator--() {
+            _point--;
+            return *this;
+        }
+
+        const_iterator    operator--(int) {
+            pointer tmp;
+            tmp = _point;
+            _point--;
+
+            return tmp;
+        }
+
+        const_iterator&   operator+=(int n) {
+            _point + n;
+            return *this;
+        }
+
+        const_iterator&   operator-=(int n) {
+            _point - n;
+            return *this;
+        }
+
+        const_iterator   operator+(difference_type n) const {
+            return const_iterator(_point + n);
+        }
+
+        const_iterator   operator-(int n) {
+            return const_iterator(_point - n);
+        }
+
+        reference   operator[](const int n) const {
+            return _point[n];
+        }
+
+        pointer     operator->() {
+            return _point;
+        }
+
+        const pointer     operator->() const {
+            return _point;
+        }
+
+        reference   operator*() {
+            return *_point;
+        }
+
+        friend bool        operator==(const const_iterator<T> &lhs, const const_iterator<T> &rhs) {
+            return lhs._point == rhs._point;
+        }
+
+        friend bool        operator!=(const const_iterator<T> &lhs, const const_iterator<T> &rhs) {
+            return lhs._point != rhs._point;
+        }
+
+        friend bool        operator>(const const_iterator<T> &lhs, const const_iterator<T> &rhs) {
+            return lhs._point > rhs._point;
+        }
+
+        friend bool        operator>=(const const_iterator<T> &lhs, const const_iterator<T> &rhs) {
+            return lhs._point >= rhs._point;
+        }
+
+        friend bool        operator<(const const_iterator<T> &lhs, const const_iterator<T> &rhs) {
+            return lhs._point < rhs._point;
+        }
+
+        friend bool        operator<=(const const_iterator<T> &lhs, const const_iterator<T> &rhs) {
             return lhs._point <= rhs._point;
         }
     };
