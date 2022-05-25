@@ -117,13 +117,14 @@ int main(int argc, char** argv) {
 
 #include "vector.hpp"
 #include "stack.hpp"
+#include "utils/make_pair.hpp"
 #include <vector>
 #include <stack>
 
 #include <iostream>
 
 int	main(void) {
-	/*{
+	{
   		// constructors used in the same order as described above:
   		ft::vector<int> first;                                // empty vector of ints
   		ft::vector<int> second (4,100);                       // four ints with value 100
@@ -552,13 +553,13 @@ int	main(void) {
      		mystack.pop();
   		}
   		std::cout << '\n';
-	}*/
+	}
 	std::cout << std::endl;
 	{
   		ft::stack<int> foo;   // three ints with a value of 100
-  		//ft::stack<int> bar;   // two ints with a value of 200
+  		ft::stack<int> bar;   // two ints with a value of 200
 
-		/*foo.push(1);
+		foo.push(1);
 		foo.push(2);
 		foo.push(3);
 		bar.push(4);
@@ -588,7 +589,45 @@ int	main(void) {
   		if (foo2< bar2) std::cout << "foo2 is less than bar2\n";
   		if (foo2> bar2) std::cout << "foo2 is greater than bar2\n";
   		if (foo2<=bar2) std::cout << "foo2 is less than or equal to bar2\n";
-  		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";*/
+  		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";
+	}
+	std::cout << std::endl;
+	{
+  		ft::pair <std::string,double> product1;                     // default constructor
+  		ft::pair <std::string,double> product2 ("tomatoes",2.30);   // value init
+  		ft::pair <std::string,double> product3 (product2);          // copy constructor
+
+  		product1 = ft::make_pair(std::string("lightbulbs"),0.99);   // using make_pair (move)
+
+  		product2.first = "shoes";                  // the type of first is string
+  		product2.second = 39.90;                   // the type of second is double
+
+  		std::cout << "The price of " << product1.first << " is $" << product1.second << '\n';
+  		std::cout << "The price of " << product2.first << " is $" << product2.second << '\n';
+  		std::cout << "The price of " << product3.first << " is $" << product3.second << '\n';
+	}
+	std::cout << std::endl;
+	{
+  		ft::pair <int,int> foo;
+  		ft::pair <int,int> bar;
+
+  		foo = ft::make_pair (10,20);
+  		bar = ft::make_pair (10.5,'A'); // ok: implicit conversion from pair<double,char>
+
+  		std::cout << "foo: " << foo.first << ", " << foo.second << '\n';
+  		std::cout << "bar: " << bar.first << ", " << bar.second << '\n';
+	}
+	std::cout << std::endl;
+	{
+  		std::pair<int,char> foo (10,'z');
+  		std::pair<int,char> bar (90,'a');
+
+  		if (foo==bar) std::cout << "foo and bar are equal\n";
+  		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+  		if (foo< bar) std::cout << "foo is less than bar\n";
+  		if (foo> bar) std::cout << "foo is greater than bar\n";
+  		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+  		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
 	}
 	return 0;
 }
