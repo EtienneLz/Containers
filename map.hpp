@@ -9,7 +9,7 @@ namespace ft
 
 template <class Key,
             class T,
-            class Compare = less<Key>,
+            class Compare = std::less<Key>,
             class Alloc = std::allocator<ft::pair<const Key, T> > >
 class map
 {
@@ -33,6 +33,7 @@ class map
     private:
         allocator_type  _alloc;
 
+    public:
         explicit map (const key_compare& comp = key_compare(),
               const allocator_type& alloc = allocator_type());
 
