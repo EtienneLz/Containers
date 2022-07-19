@@ -13,7 +13,7 @@ template <class T1, class T2> struct pair
         first_type  first;
         second_type second;
 
-        pair(void) {}
+        pair(void): first(), second() {}
 
         template<class U, class V>
         pair(const pair<U, V>& pr) {
