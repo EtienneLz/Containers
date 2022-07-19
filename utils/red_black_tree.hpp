@@ -12,33 +12,48 @@ namespace ft
 template <class Key, class T>
 struct Node {
 	ft::pair<const Key, T>  data;
-	Node                    *parent;
-	Node                    *left;
-	Node                    *right;
+	Node                    *parent = NULL;
+	Node                    *left = NULL;
+	Node                    *right = NULL;
 	int                     color;
 
     Node(Key key, T t): data(key, t) {}
-};
 
-typedef Node<class Key, class T> *NodePtr;
+    bool operator==(Node<Key, T> &rhs) {
+        if (parent == rhs.parent && left == rhs.left && right == rhs.right && color == rhs.color)
+            return true;
+        return false;
+    }
+};
 
 template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< Node<const Key, T> > >
 class RedBlackTree {
 
 	public:
 
+    typedef Node<Key,  T> *NodePtr;
     typedef typename std::size_t    size_type;
     typedef T                       mapped_value;
 
 	RedBlackTree() {
+        TNULL = _alloc_node.allocate(1);
+        _alloc_node.construct(TNULL, Node<Key, T>(Key(), T()));
+		TNULL->color = 0;
+		TNULL->left = nullptr;
+		TNULL->right = nullptr;
         _size = 0;
-        Node<Key, T> nRoot = _alloc_node.allocate(1);
+        Node<Key, T> *nRoot = _alloc_node.allocate(1);
         _alloc_node.construct(nRoot, Node<Key, T>(Key(), T())); 
 		nRoot->color = BLACK;
 		nRoot->left = nullptr;
 		nRoot->right = nullptr;
 		root = nRoot;
 	}
+
+    ~RedBlackTree() {
+        _alloc_node.destroy(TNULL);
+        _alloc_node.deallocate(TNULL, 1);
+    }
 
 	void preorder() {
 		preOrderHelper(this->root);
@@ -134,7 +149,8 @@ class RedBlackTree {
 
 	// Inserting a node
 	void insert(Key key, T val = T()) {
-		NodePtr node = _alloc_node.allocate(1);
+        NodePtr node;
+		node = _alloc_node.allocate(1);
         _alloc_node.construct(node, Node<Key, T>(key, val));
 		node->parent = nullptr;
 		node->left = TNULL;
@@ -146,7 +162,7 @@ class RedBlackTree {
 
 		while (x != TNULL) {
 			y = x;
-			if (node->data < x->data) {
+			if (node->data.first < x->data.first) {
 				x = x->left;
 			} else {
 				x = x->right;
@@ -156,7 +172,7 @@ class RedBlackTree {
 		node->parent = y;
 		if (y == nullptr) {
 			root = node;
-		} else if (node->data < y->data) {
+		} else if (node->data.first < y->data.first) {
 			y->left = node;
 		} else {
 			y->right = node;
@@ -178,7 +194,7 @@ class RedBlackTree {
 		return this->root;
 	}
 
-	void deleteNode(int data) {
+	void deleteNode(Key data) {
 		deleteNodeHelper(this->root, data);
 	}
 
@@ -189,10 +205,10 @@ class RedBlackTree {
 	}
 
 	private:
-	    NodePtr         root;
-	    NodePtr         TNULL;
-        size_t          _size;
-        NodePtr         _array;
+	    NodePtr         root = NULL;
+	    NodePtr         TNULL = NULL;
+        size_t          _size = 0;
+        NodePtr         _array = NULL;
         Alloc           _alloc_node;
 
 	// Preorder
@@ -309,11 +325,11 @@ class RedBlackTree {
 		NodePtr z = TNULL;
 		NodePtr x, y;
 		while (node != TNULL) {
-			if (node->data == key) {
+			if (node->data.first == key) {
 				z = node;
 			}
 
-			if (node->data <= key) {
+			if (node->data.first <= key) {
 				node = node->right;
 			} else {
 				node = node->left;
@@ -415,7 +431,7 @@ class RedBlackTree {
 			}
 
 			std::string sColor = root->color ? "RED" : "BLACK";
-			std::cout << root->data << "(" << sColor << ")" << std::endl;
+			std::cout << root->data.first << "(" << sColor << ")" << std::endl;
 			printHelper(root->left, indent, false);
 			printHelper(root->right, indent, true);
 		}
