@@ -36,6 +36,7 @@ class RedBlackTree {
     typedef T                       mapped_value;
 
 	RedBlackTree() {
+        std::cout << "test" << std::endl;
         TNULL = _alloc_node.allocate(1);
         _alloc_node.construct(TNULL, Node<Key, T>(Key(), T()));
 		TNULL->color = 0;
@@ -149,6 +150,7 @@ class RedBlackTree {
 
 	// Inserting a node
 	void insert(Key key, T val = T()) {
+        
         NodePtr node;
 		node = _alloc_node.allocate(1);
         _alloc_node.construct(node, Node<Key, T>(key, val));
@@ -156,6 +158,8 @@ class RedBlackTree {
 		node->left = TNULL;
 		node->right = TNULL;
 		node->color = RED;
+
+        
 
 		NodePtr y = nullptr;
 		NodePtr x = this->root;
@@ -214,7 +218,7 @@ class RedBlackTree {
 	// Preorder
 	void preOrderHelper(NodePtr node) {
 		if (node != TNULL) {
-			std::cout << node->data << " ";
+			std::cout << node->data.first << " ";
 			preOrderHelper(node->left);
 			preOrderHelper(node->right);
 		}
@@ -224,7 +228,7 @@ class RedBlackTree {
 	void inOrderHelper(NodePtr node) {
 		if (node != TNULL) {
 			inOrderHelper(node->left);
-			std::cout << node->data << " ";
+			std::cout << node->data.first << " ";
 			inOrderHelper(node->right);
 		}
 	}
@@ -234,12 +238,12 @@ class RedBlackTree {
 		if (node != TNULL) {
 			postOrderHelper(node->left);
 			postOrderHelper(node->right);
-			std::cout << node->data << " ";
+			std::cout << node->data.first << " ";
 		}
 	}
 
 	NodePtr searchTreeHelper(NodePtr node, int key) {
-		if (node == TNULL || key == node->data) {
+		if (node == TNULL || key == node->data.first) {
 			return node;
 		}
 
