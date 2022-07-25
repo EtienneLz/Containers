@@ -49,7 +49,9 @@ class map
 
 		//map& operator= (const map& x);
 
-		//iterator begin();
+		iterator begin() {
+			return _tree.minimum();
+		}
 		
 		//const_iterator begin() const;
 
