@@ -9,9 +9,6 @@ int main() {
 	bst.insert(75, 1);
 	bst.insert(57, 1);
 
-	bst.printTree();
-	std::cout << std::endl
-		 << "After deleting" << std::endl;
-	bst.deleteNode(40);
+
 	bst.printTree();
 }
