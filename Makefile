@@ -35,9 +35,15 @@ CXXFLAGS		+=	-std=c++98
 # ################################## #
 
 ${NAME}: ${OBJ}
-	${CXX} ${CXXFLAGS} ${OBJ} -o $@
+	${CXX} ${CXXFLAGS} ${OBJ} -o $@ 
 
-all:	${NAME}
+#all:	${NAME}
+
+ft:	${OBJ}
+	${CXX} ${CXXFLAGS} ${OBJ} -o $(NAME)
+
+std:	${OBJ}
+	${CXX} ${CXXFLAGS} -D STD ${OBJ} -o $(NAME)
 
 clean:
 	${RM} ${OBJ}
@@ -46,6 +52,10 @@ fclean: clean
 	${RM} ${NAME}
 
 re: clean all
+
+reft: clean ft
+
+restd: clean std
 
 fre: fclean all
 

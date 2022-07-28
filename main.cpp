@@ -26,7 +26,7 @@ struct Buffer
 #define COUNT (MAX_RAM / (int)sizeof(Buffer))
 
 template<typename T>
-class MutantStack : public ft::stack<T>
+class MutantStack : public stack<T>
 {
 public:
 	MutantStack() {}
@@ -38,7 +38,7 @@ public:
 	}
 	~MutantStack() {}
 
-	typedef typename ft::stack<T>::container_type::iterator iterator;
+	typedef typename stack<T>::container_type::iterator iterator;
 
 	iterator begin() { return this->c.begin(); }
 	iterator end() { return this->c.end(); }
@@ -55,12 +55,12 @@ int main(int argc, char** argv) {
 	const int seed = atoi(argv[1]);
 	srand(seed);
 
-	ft::vector<std::string> vector_str;
-	ft::vector<int> vector_int;
-	ft::stack<int> stack_int;
-	ft::vector<Buffer> vector_buffer;
-	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
-	ft::map<int, int> map_int;
+	vector<std::string> vector_str;
+	vector<int> vector_int;
+	stack<int> stack_int;
+	vector<Buffer> vector_buffer;
+	stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+	map<int, int> map_int;
 
 	for (int i = 0; i < COUNT; i++)
 	{
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
 		const int idx = rand() % COUNT;
 		vector_buffer[idx].idx = 5;
 	}
-	ft::vector<Buffer>().swap(vector_buffer);
+	vector<Buffer>().swap(vector_buffer);
 
 	try
 	{
@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
 	
 	for (int i = 0; i < COUNT; ++i)
 	{
-		map_int.insert(ft::make_pair(rand(), rand()));
+		map_int.insert(make_pair(rand(), rand()));
 	}
 
 	int sum = 0;
@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
 	std::cout << "should be constant with the same seed: " << sum << std::endl;
 
 	{
-		ft::map<int, int> copy = map_int;
+		map<int, int> copy = map_int;
 	}
 	MutantStack<char> iterable_stack;
 	for (char letter = 'a'; letter <= 'z'; letter++)
@@ -114,35 +114,45 @@ int main(int argc, char** argv) {
 	std::cout << std::endl;
 	return (0);
 }*/
-
-#include "vector.hpp"
-#include "stack.hpp"
-#include "utils/make_pair.hpp"
-#include <vector>
-#include <stack>
-
 #include <iostream>
+
+#include "stack.hpp"
+#include "vector.hpp"
+#include "utils/make_pair.hpp"
+
+#include <map>
+#include <stack>
+#include <vector>
+
+#ifndef STD
+# define NAMESPACE ft
+#else
+# define NAMESPACE std
+#endif
+
+
+using namespace NAMESPACE;
 
 int	main(void) {
 	{
   		// constructors used in the same order as described above:
-  		ft::vector<int> first;                                // empty vector of ints
-  		ft::vector<int> second (4,100);                       // four ints with value 100
-  		ft::vector<int> third (second.begin(),second.end());  // iterating through second
-  		ft::vector<int> fourth (third);                       // a copy of third
+  		vector<int> first;                                // empty vector of ints
+  		vector<int> second (4,100);                       // four ints with value 100
+  		vector<int> third (second.begin(),second.end());  // iterating through second
+  		vector<int> fourth (third);                       // a copy of third
 
   		// the iterator constructor can also be used to construct from arrays:
   		int myints[] = {16,2,77,29};
-  		ft::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+  		vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
 
   		std::cout << "The contents of fifth are:";
-  		for (ft::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+  		for (vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
     		std::cout << ' ' << *it;
   		std::cout << '\n';
 	}
 	std::cout << std::endl;
 	{
-		ft::vector<int> vec;
+		vector<int> vec;
 
 		std::cout << "Size: " << vec.size() << std::endl << std::endl;
 
@@ -187,7 +197,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> myvector;
+  		vector<int> myvector;
   		int * p;
   		unsigned int i;
 
@@ -207,7 +217,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> myvector;
+  		vector<int> myvector;
   		int sum (0);
   		myvector.push_back (100);
   		myvector.push_back (200);
@@ -222,7 +232,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-		ft::vector<int> myvector;
+		vector<int> myvector;
 
 		myvector.push_back(78);
 		myvector.push_back(16);
@@ -237,7 +247,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-		ft::vector<int> myints;
+		vector<int> myints;
 		std::cout << "0. size: " << myints.size() << '\n';
 
 		for (int i=0; i<10; i++) myints.push_back(i);
@@ -251,7 +261,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		std::vector<int> myvector;
+  		vector<int> myvector;
 
   		// set some content in the vector:
   		for (int i=0; i<100; i++)
@@ -263,7 +273,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> myvector;
+  		vector<int> myvector;
 
   		// set some initial content:
   		for (unsigned int i = 1; i < 10; i++) myvector.push_back(i);
@@ -279,8 +289,8 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int>::size_type sz;
-  		ft::vector<int> foo;
+  		vector<int>::size_type sz;
+  		vector<int> foo;
 
   		sz = foo.capacity();
   		std::cout << "making foo grow:\n";
@@ -292,7 +302,7 @@ int	main(void) {
     		}
   		}
 
-  		ft::vector<int> bar;
+  		vector<int> bar;
   		sz = bar.capacity();
   		bar.reserve(100);   // this is the only difference with foo above
   		std::cout << "making bar grow:\n";
@@ -306,7 +316,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> myvector (10);   // 10 zero-initialized ints
+  		vector<int> myvector (10);   // 10 zero-initialized ints
 
   		// assign some values:
   		for (unsigned i = 0; i < myvector.size(); i++)
@@ -319,38 +329,38 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> myvector;
+  		vector<int> myvector;
   		for (int i=1; i<=5; i++) myvector.push_back(i);
 
   		std::cout << "myvector contains:";
-  		for (ft::vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
+  		for (vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
     		std::cout << ' ' << *it;
   		std::cout << '\n';
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> myvector (5);  // 5 default-constructed ints
+  		vector<int> myvector (5);  // 5 default-constructed ints
 
   		int i=0;
 
-  		ft::vector<int>::reverse_iterator rit = myvector.rbegin();
+  		vector<int>::reverse_iterator rit = myvector.rbegin();
   		for (; rit!= myvector.rend(); ++rit)
     		*rit = ++i;
 
   		std::cout << "myvector contains:";
-  		for (ft::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
+  		for (vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
     		std::cout << ' ' << *it;
   		std::cout << '\n';
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> first;
-  		ft::vector<int> second;
-  		ft::vector<int> third;
+  		vector<int> first;
+  		vector<int> second;
+  		vector<int> third;
 
   		first.assign (7,100);             // 7 ints with a value of 100
 
-  		ft::vector<int>::iterator it;
+  		vector<int>::iterator it;
   		it=first.begin();
 
   		second.assign (it,first.end()-1); // the 5 central values of first
@@ -364,8 +374,8 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> foo (3,100);   // three ints with a value of 100
-  		ft::vector<int> bar (5,200);   // five ints with a value of 200
+  		vector<int> foo (3,100);   // three ints with a value of 100
+  		vector<int> bar (5,200);   // five ints with a value of 200
 
 		std::cout << "foo contains:";
   		for (unsigned i=0; i<foo.size(); i++)
@@ -389,7 +399,7 @@ int	main(void) {
     		std::cout << ' ' << bar[i];
   		std::cout << '\n';
 
-		ft::swap(foo, bar);
+		swap(foo, bar);
 
 		std::cout << std::endl << "Swapping" << std::endl;
 
@@ -405,8 +415,8 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-		ft::vector<int> myvector (3,100);
-  		ft::vector<int>::iterator it;
+		vector<int> myvector (3,100);
+  		vector<int>::iterator it;
 
   		it = myvector.begin();
   		it = myvector.insert ( it , 200 );
@@ -429,7 +439,7 @@ int	main(void) {
   		std::cout << '\n';
 		it = myvector.begin();
 
-  		ft::vector<int> anothervector (2,400);
+  		vector<int> anothervector (2,400);
   		myvector.insert (it+2,anothervector.begin(),anothervector.end());
 
   		int myarray [] = { 501,502,503 };
@@ -443,7 +453,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> myvector;
+  		vector<int> myvector;
 
   		// set some values (from 1 to 10)
   		for (int i=1; i<=10; i++) myvector.push_back(i);
@@ -466,22 +476,22 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-		ft::vector<int> myvector1;
+		vector<int> myvector1;
 
   		// set some values (from 1 to 10)
   		for (int i=1; i<=10; i++) myvector1.push_back(i);
-		ft::vector<int> myvector2;
+		vector<int> myvector2;
 
   		// set some values (from 1 to 10)
   		for (int i=1; i<=10; i++) myvector2.push_back(i);
-		ft::vector<ft::vector<int> > myvector;
+		vector<vector<int> > myvector;
 		myvector.push_back(myvector1);
 		myvector.push_back(myvector2);
 	}
 	std::cout << std::endl;
 	{
-  		ft::vector<int> foo (3,100);   // three ints with a value of 100
-  		ft::vector<int> bar (2,200);   // two ints with a value of 200
+  		vector<int> foo (3,100);   // three ints with a value of 100
+  		vector<int> bar (2,200);   // two ints with a value of 200
 
   		if (foo==bar) std::cout << "foo and bar are equal\n";
   		if (foo!=bar) std::cout << "foo and bar are not equal\n";
@@ -491,8 +501,8 @@ int	main(void) {
   		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
 		
 		std::cout << std::endl;
-		ft::vector<int> foo2 (2,200);   // three ints with a value of 100
-  		ft::vector<int> bar2 (2,200);   // two ints with a value of 200
+		vector<int> foo2 (2,200);   // three ints with a value of 100
+  		vector<int> bar2 (2,200);   // two ints with a value of 200
 
   		if (foo2==bar2) std::cout << "foo2 and bar2 are equal\n";
   		if (foo2!=bar2) std::cout << "foo2 and bar2 are not equal\n";
@@ -501,11 +511,11 @@ int	main(void) {
   		if (foo2<=bar2) std::cout << "foo2 is less than or equal to bar2\n";
   		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";
 
-		ft::stack<int> test;
+		stack<int> test;
 	}
 	std::cout << std::endl << "=====STACK TEST=====" << std::endl;
 	{
-  		ft::stack<int> mystack;
+  		stack<int> mystack;
   		int sum (0);
 
   		for (int i=1;i<=10;i++) mystack.push(i);
@@ -520,7 +530,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::stack<int> myints;
+  		stack<int> myints;
   		std::cout << "0. size: " << myints.size() << '\n';
 
   		for (int i=0; i<5; i++) myints.push(i);
@@ -531,7 +541,7 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::stack<int> mystack;
+  		stack<int> mystack;
 
   		mystack.push(10);
   		mystack.push(20);
@@ -542,7 +552,7 @@ int	main(void) {
 }
 	std::cout << std::endl;
 	{
-  		ft::stack<int> mystack;
+  		stack<int> mystack;
 
   		for (int i=0; i<5; ++i) mystack.push(i);
 
@@ -556,8 +566,8 @@ int	main(void) {
 	}
 	std::cout << std::endl;
 	{
-  		ft::stack<int> foo;   // three ints with a value of 100
-  		ft::stack<int> bar;   // two ints with a value of 200
+  		stack<int> foo;   // three ints with a value of 100
+  		stack<int> bar;   // two ints with a value of 200
 
 		foo.push(1);
 		foo.push(2);
@@ -574,8 +584,8 @@ int	main(void) {
   		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
 		
 		std::cout << std::endl;
-		ft::stack<int> foo2;   // three ints with a value of 100
-  		ft::stack<int> bar2;   // two ints with a value of 200
+		stack<int> foo2;   // three ints with a value of 100
+  		stack<int> bar2;   // two ints with a value of 200
 
 		foo2.push(1);
 		foo2.push(2);
@@ -592,42 +602,5 @@ int	main(void) {
   		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";
 	}
 	std::cout << std::endl;
-	{
-  		ft::pair <std::string,double> product1;                     // default constructor
-  		ft::pair <std::string,double> product2 ("tomatoes",2.30);   // value init
-  		ft::pair <std::string,double> product3 (product2);          // copy constructor
-
-  		product1 = ft::make_pair(std::string("lightbulbs"),0.99);   // using make_pair (move)
-
-  		product2.first = "shoes";                  // the type of first is string
-  		product2.second = 39.90;                   // the type of second is double
-
-  		std::cout << "The price of " << product1.first << " is $" << product1.second << '\n';
-  		std::cout << "The price of " << product2.first << " is $" << product2.second << '\n';
-  		std::cout << "The price of " << product3.first << " is $" << product3.second << '\n';
-	}
-	std::cout << std::endl;
-	{
-  		ft::pair <int,int> foo;
-  		ft::pair <int,int> bar;
-
-  		foo = ft::make_pair (10,20);
-  		bar = ft::make_pair (10.5,'A'); // ok: implicit conversion from pair<double,char>
-
-  		std::cout << "foo: " << foo.first << ", " << foo.second << '\n';
-  		std::cout << "bar: " << bar.first << ", " << bar.second << '\n';
-	}
-	std::cout << std::endl;
-	{
-  		std::pair<int,char> foo (10,'z');
-  		std::pair<int,char> bar (90,'a');
-
-  		if (foo==bar) std::cout << "foo and bar are equal\n";
-  		if (foo!=bar) std::cout << "foo and bar are not equal\n";
-  		if (foo< bar) std::cout << "foo is less than bar\n";
-  		if (foo> bar) std::cout << "foo is greater than bar\n";
-  		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
-  		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
-	}
 	return 0;
 }

@@ -4,7 +4,7 @@
 # include <memory>
 # include <iostream>
 # include "vector.hpp"
-# include "utils/iterators.hpp"
+# include "utils/random_access_iterator.hpp"
 # include "utils/reverse_iterators.hpp"
 # include "utils/enable_if.hpp"
 # include "utils/is_integral.hpp"
@@ -96,6 +96,7 @@ namespace ft
 
     template <class T, class Container>
     bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
+		std::cout << "Yo\n";
         return !(lhs < rhs);
     }
 
