@@ -602,5 +602,26 @@ int	main(void) {
   		if (foo2>=bar2) std::cout << "foo2 is greater than or equal to bar2\n";
 	}
 	std::cout << std::endl;
+	{
+		std::map<int, int> c1;
+
+    	c1.insert(std::map<int, int>::value_type('a', 1));
+    	c1.insert(std::map<int, int>::value_type('b', 2));
+    	c1.insert(std::map<int, int>::value_type('c', 3));
+		c1.insert(std::map<int, int>::value_type('c', 3));
+		c1.insert(std::map<int, int>::value_type('c', 3));
+		c1.insert(std::map<int, int>::value_type('c', 3));
+		c1.insert(std::map<int, int>::value_type('c', 3));
+
+		std::cout << c1.size() << std::endl;
+
+		for (std::map<int, int>::iterator it = c1.begin(); it != c1.end(); it++) {
+			std::cout << it-> << std::endl;
+		}
+	// find and show elements
+    	std::cout << "c1.at('a') == " << c1.at('a') << std::endl;
+    	std::cout << "c1.at('b') == " << c1.at('b') << std::endl;
+    	std::cout << "c1.at('c') == " << c1.at('c') << std::endl;
+	}
 	return 0;
 }

@@ -35,12 +35,12 @@ class RedBlackTree {
 
 	public:
 
-	typedef Node<Key,  T> *NodePtr;
+	typedef Node<Key,  T> 			*NodePtr;
 	typedef typename std::size_t    size_type;
 	typedef T                       mapped_value;
+	typedef	Compare					key_compare;
 
 	RedBlackTree() {
-		std::cout << "test" << std::endl;
 		TNULL = _alloc_node.allocate(1);
 		_alloc_node.construct(TNULL, Node<Key, T>(Key(), T()));
 		TNULL->color = 0;
@@ -83,8 +83,17 @@ class RedBlackTree {
 		postOrderHelper(this->root);
 	}
 
-	NodePtr searchTree(int k) {
+	NodePtr searchTree(Key k) {
 		return searchTreeHelper(this->root, k);
+	}
+
+	NodePtr find_tree(Key k) {
+		NodePtr	node;
+
+		node = searchTreeHelper(this->root, k)
+		if (node == TNULL)
+			return NULL
+		return node;
 	}
 
 	NodePtr minimum(NodePtr node) {
@@ -165,7 +174,8 @@ class RedBlackTree {
 
 	// Inserting a node
 	void insert(Key key, T val = T()) {
-		
+		if (searchTree(key) != TNULL)
+			return ;
 		NodePtr node;
 		node = _alloc_node.allocate(1);
 		_alloc_node.construct(node, Node<Key, T>(key, val));
@@ -179,8 +189,7 @@ class RedBlackTree {
 
 		while (x != TNULL) {
 			y = x;
-			std::cout << "Bijour " << node->data.first << " " << x->data.first << std::endl;
-			if (node->data.first < x->data.first)
+			if (key_compare() (node->data.first, x->data.first))
 				x = x->left;
 			else
 				x = x->right;
@@ -188,7 +197,7 @@ class RedBlackTree {
 		node->parent = y;
 		if (y == nullptr)
 			root = node;
-		else if (node->data.first < y->data.first)
+		else if (key_compare() (node->data.first, y->data.first))
 			y->left = node;
 		else
 			y->right = node;
@@ -262,7 +271,7 @@ class RedBlackTree {
 			return node;
 		}
 
-		if (key < node->data) {
+		if (key_compare() (key, node->data.first)) {
 			return searchTreeHelper(node->left, key);
 		}
 		return searchTreeHelper(node->right, key);
@@ -344,19 +353,16 @@ class RedBlackTree {
 		NodePtr z = TNULL;
 		NodePtr x, y;
 		while (node != TNULL) {
-			if (node->data.first == key) {
+			if (node->data.first == key)
 				z = node;
-			}
-
-			if (node->data.first <= key) {
+			if (key_compare() (node->data.first, key))
 				node = node->right;
-			} else {
+			else
 				node = node->left;
-			}
 		}
 
 		if (z == TNULL) {
-			std::cout << "Key not found in the tree" << std::endl;
+			std::cout << "Key not found" << std::endl;
 			return;
 		}
 
@@ -393,7 +399,7 @@ class RedBlackTree {
 		}
 	}
 
-	// For balancing the tree after insertion
+	// Balance the tree after an insertion
 	void insertFix(NodePtr k) {
 		NodePtr u;
 		while (k->parent->color == RED) {

@@ -19,9 +19,7 @@ SRC			=	main.cpp \
 # ################################## #
 #               OBJECTS              #
 # ################################## #
-OBJ_DIR		=	./
 OBJ			=	${SRC:.cpp=.o}
-OBJ			:=	${addprefix ${OBJ_DIR}, ${OBJ}}
 
 # ################################## #
 #                FLAGS               #
@@ -40,10 +38,10 @@ ${NAME}: ${OBJ}
 #all:	${NAME}
 
 ft:	${OBJ}
-	${CXX} ${CXXFLAGS} ${OBJ} -o $(NAME)
+	${CXX} ${CXXFLAGS} -o $(NAME) ${SRC}
 
 std:	${OBJ}
-	${CXX} ${CXXFLAGS} -D STD ${OBJ} -o $(NAME)
+	${CXX} ${CXXFLAGS} -D STD -o $(NAME) ${SRC}
 
 clean:
 	${RM} ${OBJ}
@@ -53,9 +51,9 @@ fclean: clean
 
 re: clean all
 
-reft: clean ft
+reft: fclean ft
 
-restd: clean std
+restd: fclean std
 
 fre: fclean all
 

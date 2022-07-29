@@ -8,7 +8,9 @@ int main() {
 	bst.insert(60, 1);
 	bst.insert(75, 1);
 	bst.insert(57, 1);
+	bst.insert(57, 1);
+	bst.printTree();
 
-
+	bst.deleteNode(60);
 	bst.printTree();
 }

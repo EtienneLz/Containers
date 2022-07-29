@@ -96,7 +96,6 @@ namespace ft
 
     template <class T, class Container>
     bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
-		std::cout << "Yo\n";
         return !(lhs < rhs);
     }
 

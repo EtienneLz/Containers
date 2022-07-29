@@ -2,7 +2,7 @@
 # define MAP_HPP
 # include <memory>
 # include <map>
-# include "utils/red_black_tree.hpp"
+# include "utils/bidirectional_iterator.hpp"
 
 namespace ft
 {
@@ -23,18 +23,25 @@ class map
 		typedef typename allocator_type::const_reference    const_reference;
 		typedef typename allocator_type::pointer            pointer;
 		typedef typename allocator_type::const_pointer      const_pointer;
-		typedef std::map<Key, T>::container_type::iterator       iterator;
-		typedef std::map<Key, T>::container_type::const_iterator       const_iterator;
-		typedef std::map<Key, T>::container_type::reverse_iterator       reverse_iterator;
-		typedef std::map<Key, T>::container_type::const_reverse_iterator       const_reverse_iterator;
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename std::size_t                        size_type;
+
+		typedef ft::bidirectional_iterator<ft::Node, ft::RedBlackTree>		iterator;
+		typedef ft::bidirectional_iterator<ft::Node, ft::RedBlackTree>		const_iterator;
+		typedef std::map<Key, T>::container_type::reverse_iterator       	reverse_iterator;
+		typedef std::map<Key, T>::container_type::const_reverse_iterator	const_reverse_iterator;
 	
 	private:
 		allocator_type                          _alloc;
 		ft::RedBlackTree<key_type, mapped_type> _tree;
 
 	public:
+		/*
+			MEMBER FUNCTIONS
+			constructor
+			destructor
+			operator=
+		*/
 		explicit map (const key_compare& comp = key_compare(),
 			  const allocator_type& alloc = allocator_type());
 
@@ -49,15 +56,28 @@ class map
 
 		//map& operator= (const map& x);
 
+		/*
+			ITERATORS
+			begin
+			end
+			rbegin
+			rend
+		*/
 		iterator begin() {
-			return _tree.minimum();
+			return iterator(_tree.minimum(), _tree);
 		}
 		
-		//const_iterator begin() const;
+		const_iterator begin() const {
+			return const_iterator(_tree.minimum(), _tree);
+		}
 
-		//iterator end();
+		iterator end() {
+			return iterator(_tree.maximum(), _tree);
+		}
 
-		//const_iterator end() const;
+		const_iterator end() const {
+			return const_iterator(_tree.minimum(), _tree);
+		}
 
 		//reverse_iterator rbegin();
 		
@@ -66,6 +86,13 @@ class map
 		//reverse_iterator rend();
 		
 		//const_reverse_iterator rend() const;
+
+		/*
+			CAPACITY
+			empty
+			size
+			max_size
+		*/
 
 		bool empty() const {
 			if (_tree.get_size() == 0)
@@ -81,7 +108,13 @@ class map
 			return alloc.max_size();
 		}
 
-		//mapped_type& operator[] (const key_type& k);
+		/*
+			MODIFIERS
+			clear
+			insert
+			erase
+			swap
+		*/
 
 		//pair<iterator,bool> insert (const value_type& val);
 
@@ -90,7 +123,11 @@ class map
 		//template <class InputIterator>
 		//void insert (InputIterator first, InputIterator last);
 
-		//void erase (iterator position);
+		void erase (iterator position) {
+			_tree.deleteNode(position->first);
+		}
+
+		//void erase( iterator first, iterator last );
 
 		//size_type erase (const key_type& k);
 
@@ -101,28 +138,42 @@ class map
 		void clear() {
 			_tree.deleteAll();
 		}
+		/*
+			LOOKUP
+			count
+			find
+			equal_range
+			lower_bound
+			upper_bound
+		*/
 
-		key_compare key_comp() const;
+		size_type count( const Key& key ) const {
+			if (_tree.searchTree(key) != NULL)
+				return 1;
+			return 0;
+		}
 
-		value_compare value_comp() const;
+		iterator find( const Key& key ) {
+			return iterator(_tree.searchTree(key), _tree);
+		}
+	
+		const_iterator find( const Key& key ) const {
+			return const_iterator(_tree.searchTree(key), _tree);
+		}
 
-		iterator find (const key_type& k);
+		/*
+			OBSERVER FUNCTIONS
+			key_comp
+			value_compare
+		*/
 
-		const_iterator find (const key_type& k) const;
+		key_compare key_comp() const {
+			return key_compare();
+		}
 
-		size_type count (const key_type& k) const;
-
-		iterator lower_bound (const key_type& k);
-
-		const_iterator lower_bound (const key_type& k) const;
-
-		iterator upper_bound (const key_type& k);
-
-		const_iterator upper_bound (const key_type& k) const;
-
-		pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
-
-		pair<iterator,iterator>             equal_range (const key_type& k);
+		/*value_compare value_comp() const {
+			return value_compare(key_compare());
+		}*/
 
 		allocator_type get_allocator() const {
 			return allocator_type;

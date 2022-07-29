@@ -17,17 +17,14 @@ template <class T1, class T2> struct pair
 
         template<class U, class V>
         pair(const pair<U, V>& pr) {
-			std::cout << "Bonjour\n";
             first = pr.first;
             second = pr.second;
         }
 
         pair(const first_type& a, const second_type& b): first(a), second(b) {
-			std::cout << "Bonjour\n";
 		}
 
         pair& operator=(const pair& pr) {
-			std::cout << "Bonjour\n";
             first = pr.first;
             second = pr.second;
             return *this;
