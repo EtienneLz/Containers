@@ -1,0 +1,6 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/mnt/nfs/homes/elouchez/Documents/Containers'
+clang++ -Wall -Wextra -Werror -std=c++98 -I. -o main.o -c main.cpp
+clang++ -Wall -Wextra -Werror -std=c++98 -I. main.o -o containers 
+make: Leaving directory '/mnt/nfs/homes/elouchez/Documents/Containers'
+ 

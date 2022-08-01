@@ -1,7 +1,7 @@
 # ################################## #
 #               COMMAND              #
 # ################################## #
-CXX			=	c++
+CC			=	clang++
 MKDIR		=	mkdir -p
 RM			=	rm -rf
 
@@ -14,48 +14,62 @@ NAME		=	containers
 #               SOURCES              #
 # ################################## #
 # SRC_DIR		= 	./
-SRC			=	main.cpp \
+SRC			=	main.cpp
+SRC_MAP		=	main_map.cpp
 
 # ################################## #
 #               OBJECTS              #
 # ################################## #
-OBJ			=	${SRC:.cpp=.o}
+OBJ			:=	${SRC:.cpp=.o}
+OBJ_MAP		:=	${SRC_MAP:.cpp=.o}
 
 # ################################## #
 #                FLAGS               #
 # ################################## #
-CXXFLAGS		=	-Wall -Wextra -Werror 
-CXXFLAGS		+=	-std=c++98
-# CXXFLAGS		+=	-I ./
+CFLAGS		=	-Wall -Wextra -Werror -std=c++98 -I.
 
 # ################################## #
 #                RULES               #
 # ################################## #
 
 ${NAME}: ${OBJ}
-	${CXX} ${CXXFLAGS} ${OBJ} -o $@ 
+	$(CC) ${CFLAGS} ${OBJ} -o $@ 
 
-#all:	${NAME}
+all:	${NAME}
+
+ft_map: ${OBJ_MAP}
+		$(CC) ${CFLAGS} -o ft_map ${SRC_MAP}
+
+std_map: ${OBJ_MAP}
+		$(CC) ${CFLAGS} -D STD -o std_map ${SRC_MAP}
 
 ft:	${OBJ}
-	${CXX} ${CXXFLAGS} -o $(NAME) ${SRC}
+	$(CC) ${CFLAGS} -o $(NAME) ${SRC}
 
 std:	${OBJ}
-	${CXX} ${CXXFLAGS} -D STD -o $(NAME) ${SRC}
+	$(CC) ${CFLAGS} -D STD -o $(NAME) ${SRC}
 
 clean:
 	${RM} ${OBJ}
 
 fclean: clean
 	${RM} ${NAME}
+	${RM} ft_map std_map
 
 re: clean all
+
+reft_map: fclean ft_map
+
+restd_map: fclean std_map
 
 reft: fclean ft
 
 restd: fclean std
 
 fre: fclean all
+
+%.o: %.cpp
+		$(CC) $(CFLAGS) -o $@ -c $<
 
 -include ${DEP}
 

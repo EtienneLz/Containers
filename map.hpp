@@ -2,6 +2,8 @@
 # define MAP_HPP
 # include <memory>
 # include <map>
+
+# include "utils/red_black_tree.hpp"
 # include "utils/bidirectional_iterator.hpp"
 
 namespace ft
@@ -26,10 +28,10 @@ class map
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename std::size_t                        size_type;
 
-		typedef ft::bidirectional_iterator<ft::Node, ft::RedBlackTree>		iterator;
-		typedef ft::bidirectional_iterator<ft::Node, ft::RedBlackTree>		const_iterator;
-		typedef std::map<Key, T>::container_type::reverse_iterator       	reverse_iterator;
-		typedef std::map<Key, T>::container_type::const_reverse_iterator	const_reverse_iterator;
+		typedef ft::bidirectional_iterator<value_type, ft::Node<Key, T> >		iterator;
+		typedef ft::bidirectional_iterator<value_type, ft::Node<Key, T> >		const_iterator;
+		//typedef std::map<Key, T>::container_type::reverse_iterator       	reverse_iterator;
+		//typedef std::map<Key, T>::container_type::const_reverse_iterator	const_reverse_iterator;
 	
 	private:
 		allocator_type                          _alloc;
@@ -64,19 +66,19 @@ class map
 			rend
 		*/
 		iterator begin() {
-			return iterator(_tree.minimum(), _tree);
+			return iterator(_tree.minimum(_tree.getRoot()));
 		}
 		
 		const_iterator begin() const {
-			return const_iterator(_tree.minimum(), _tree);
+			return const_iterator(_tree.minimum(_tree.getRoot()));
 		}
 
 		iterator end() {
-			return iterator(_tree.maximum(), _tree);
+			return iterator(_tree.maximum(_tree.getRoot()));
 		}
 
 		const_iterator end() const {
-			return const_iterator(_tree.minimum(), _tree);
+			return const_iterator(_tree.maximum(_tree.getRoot()));
 		}
 
 		//reverse_iterator rbegin();
@@ -105,7 +107,7 @@ class map
 		}
 
 		size_type max_size() const {
-			return alloc.max_size();
+			return _alloc.max_size();
 		}
 
 		/*
@@ -116,12 +118,20 @@ class map
 			swap
 		*/
 
-		//pair<iterator,bool> insert (const value_type& val);
+		pair<iterator,bool> insert (const value_type& val) {
+			return _tree.insert(val.first, val.second);
+		}
 
-		//iterator insert (iterator position, const value_type& val);
+		iterator insert (iterator position, const value_type& val) {
+			(void)position;
+			return _tree.insert(val).first;
+		}
 
-		//template <class InputIterator>
-		//void insert (InputIterator first, InputIterator last);
+		template <class InputIteratorMap>
+		void insert (InputIteratorMap first, InputIteratorMap last) {
+			for (InputIteratorMap it = first; it != last; it++)
+				_tree.insert(*it);
+		}
 
 		void erase (iterator position) {
 			_tree.deleteNode(position->first);
@@ -154,11 +164,11 @@ class map
 		}
 
 		iterator find( const Key& key ) {
-			return iterator(_tree.searchTree(key), _tree);
+			return iterator(_tree.searchTree(key));
 		}
 	
 		const_iterator find( const Key& key ) const {
-			return const_iterator(_tree.searchTree(key), _tree);
+			return const_iterator(_tree.searchTree(key));
 		}
 
 		/*
@@ -175,9 +185,9 @@ class map
 			return value_compare(key_compare());
 		}*/
 
-		allocator_type get_allocator() const {
+		/*allocator_type get_allocator() const {
 			return allocator_type;
-		}
+		}*/
 };
 
 };

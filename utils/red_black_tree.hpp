@@ -1,6 +1,7 @@
 #ifndef RED_BLACK_TREE
 # define RED_BLACK_TREE
 
+# include "bidirectional_iterator.hpp"
 # include "make_pair.hpp"
 # include <iostream>
 
@@ -12,9 +13,9 @@ namespace ft
 template <class Key, class T>
 struct Node {
 	ft::pair<const Key, T>  data;
-	Node                    *parent = NULL;
-	Node                    *left = NULL;
-	Node                    *right = NULL;
+	Node                    *parent;
+	Node                    *left;
+	Node                    *right;
 	int                     color;
 
 	Node(Key key, T t): data(key, t) {}
@@ -35,17 +36,20 @@ class RedBlackTree {
 
 	public:
 
+	typedef Node<Key,  T>			value_type;
 	typedef Node<Key,  T> 			*NodePtr;
 	typedef typename std::size_t    size_type;
 	typedef T                       mapped_value;
 	typedef	Compare					key_compare;
 
+	typedef bidirectional_iterator<ft::pair<const Key, T>, Node<Key, T> >		iterator;
+
 	RedBlackTree() {
 		TNULL = _alloc_node.allocate(1);
 		_alloc_node.construct(TNULL, Node<Key, T>(Key(), T()));
 		TNULL->color = 0;
-		TNULL->left = nullptr;
-		TNULL->right = nullptr;
+		TNULL->left = NULL;
+		TNULL->right = NULL;
 		_size = 0;
 		Node<Key, T> *nRoot = _alloc_node.allocate(1);
 		_alloc_node.construct(nRoot, Node<Key, T>(Key(), T())); 
@@ -90,9 +94,9 @@ class RedBlackTree {
 	NodePtr find_tree(Key k) {
 		NodePtr	node;
 
-		node = searchTreeHelper(this->root, k)
+		node = searchTreeHelper(this->root, k);
 		if (node == TNULL)
-			return NULL
+			return NULL;
 		return node;
 	}
 
@@ -144,7 +148,7 @@ class RedBlackTree {
 			y->left->parent = x;
 		}
 		y->parent = x->parent;
-		if (x->parent == nullptr) {
+		if (x->parent == NULL) {
 			this->root = y;
 		} else if (x == x->parent->left) {
 			x->parent->left = y;
@@ -162,7 +166,7 @@ class RedBlackTree {
 			y->right->parent = x;
 		}
 		y->parent = x->parent;
-		if (x->parent == nullptr)
+		if (x->parent == NULL)
 			this->root = y;
 		else if (x == x->parent->right)
 			x->parent->right = y;
@@ -173,18 +177,23 @@ class RedBlackTree {
 	}
 
 	// Inserting a node
-	void insert(Key key, T val = T()) {
-		if (searchTree(key) != TNULL)
-			return ;
+	pair<iterator, bool> insert(Key key, T val = T()) {
+		pair<iterator, bool>	ret;
+
+		if (searchTree(key) != TNULL) {
+			ret.first = iterator(searchTree(key));
+			ret.second = false;
+			return ret;
+		}
 		NodePtr node;
 		node = _alloc_node.allocate(1);
-		_alloc_node.construct(node, Node<Key, T>(key, val));
-		node->parent = nullptr;
+		_alloc_node.construct(node, Node<const Key, T>(key, val));
+		node->parent = NULL;
 		node->left = TNULL;
 		node->right = TNULL;
 		node->color = RED;
 
-		NodePtr y = nullptr;
+		NodePtr y = NULL;
 		NodePtr x = this->root;
 
 		while (x != TNULL) {
@@ -195,23 +204,32 @@ class RedBlackTree {
 				x = x->right;
 		}
 		node->parent = y;
-		if (y == nullptr)
+		if (y == NULL)
 			root = node;
 		else if (key_compare() (node->data.first, y->data.first))
 			y->left = node;
 		else
 			y->right = node;
 
-		if (node->parent == nullptr) {
+		if (node->parent == NULL) {
 			node->color = BLACK;
-			return;
+			ret.first = iterator(node);
+			ret.second = true;
+			_size++;
+			return ret;
 		}
 
-		if (node->parent->parent == nullptr) {
-			return;
+		if (node->parent->parent == NULL) {
+			ret.first = iterator(node);
+			ret.second = true;
+			_size++;
+			return ret;
 		}
 		_size++;
 		insertFix(node);
+		ret.first = iterator(node);
+		ret.second = true;
+		return ret;
 	}
 
 	NodePtr getRoot() {
@@ -228,15 +246,15 @@ class RedBlackTree {
 		}
 	}
 
-	size_t	get_size() {
+	size_t	get_size() const {
 		return _size;
 	}
 
 	private:
-		NodePtr         root = NULL;
-		NodePtr         TNULL = NULL;
-		size_t          _size = 0;
-		NodePtr         _array = NULL;
+		NodePtr         root;
+		NodePtr         TNULL;
+		size_t          _size;
+		NodePtr         _array;
 		Alloc           _alloc_node;
 
 	// Preorder
@@ -339,7 +357,7 @@ class RedBlackTree {
 	}
 
 	void rbTransplant(NodePtr u, NodePtr v) {
-		if (u->parent == nullptr) {
+		if (u->parent == NULL) {
 			root = v;
 		} else if (u == u->parent->left) {
 			u->parent->left = v;
