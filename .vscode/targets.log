@@ -1,12 +1,13 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # GNU Make 4.2.1
+ 
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Aug  4 13:01:07 2022
+# Make data base, printed on Thu Aug  4 15:57:45 2022
 
 # Variables
 
@@ -45,13 +46,15 @@ SHELL = /bin/sh
 # makefile (from 'Makefile', line 6)
 RM = rm -rf
 # environment
+GDM_LANG = en
+# environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
 _ = /usr/share/code/code
 # makefile (from 'Makefile', line 29)
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -I.
 # environment
-JOURNAL_STREAM = 9:458969
+JOURNAL_STREAM = 9:652844
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'Makefile', line 1)
@@ -69,18 +72,17 @@ XDG_DATA_DIRS = /usr/share/gnome:/usr/share/ubuntu:/mnt/nfs/homes/elouchez/.loca
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/38273/bus
 # environment
- 
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 80033
+MANAGERPID = 113132
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/38273/vscode-ipc-2549ff32-cd46-4f16-a0bb-42c0c5362175.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/38273/vscode-ipc-79fd3f67-188c-43a4-9e2e-f6fcd3d9aba2.sock
 # environment
 VSCODE_CWD = /mnt/nfs/homes/elouchez
 # environment
-XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
+XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session1
 # environment
-KRB5CCNAME = FILE:/tmp/krb5cc_38273_8BYO1e
+KRB5CCNAME = FILE:/tmp/krb5cc_38273_5h8Jfl
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -92,7 +94,7 @@ GPG_AGENT_INFO = /run/user/38273/gnupg/S.gpg-agent:0:1
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
-SESSION_MANAGER = local/e1r6p13.clusters.42paris.fr:@/tmp/.ICE-unix/80567,unix/e1r6p13.clusters.42paris.fr:/tmp/.ICE-unix/80567
+SESSION_MANAGER = local/e1r6p13.clusters.42paris.fr:@/tmp/.ICE-unix/113675,unix/e1r6p13.clusters.42paris.fr:/tmp/.ICE-unix/113675
 # environment
 XDG_RUNTIME_DIR = /run/user/38273
 # environment
@@ -102,7 +104,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = e2291c76ed3341caa6ff922d2dd0f0e3
+INVOCATION_ID = 0eabd99b88da422287a8fa6fd6fcccfd
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -114,7 +116,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/38273/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 82403
+GIO_LAUNCHED_DESKTOP_FILE_PID = 114016
 # automatic
 %F = $(notdir $%)
 # environment
@@ -126,7 +128,7 @@ PWD = /mnt/nfs/homes/elouchez/Documents/Containers
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 80532
+SSH_AGENT_PID = 113642
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -190,6 +192,8 @@ OLDPWD = /mnt/nfs/homes/elouchez
 # automatic
 *F = $(notdir $*)
 # environment
+LANGUAGE = en
+# environment
 XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 # environment
 VSCODE_IPC_HOOK = /run/user/38273/vscode-f5076466-1.68.1-main.sock
@@ -238,9 +242,9 @@ LANG = C
 # environment
 DOCKER_HOST = unix:///run/user/38273/docker.sock
 # environment
-VSCODE_PID = 82403
+VSCODE_PID = 114016
 # variable set hash-table stats:
-# Load=114/1024=11%, Rehash=0, Collisions=17/154=11%
+# Load=116/1024=11%, Rehash=0, Collisions=17/156=11%
 
 # Pattern-specific Variable Values
 
@@ -277,6 +281,7 @@ std_map: main_map.o
 		$(CC) ${CFLAGS} -D STD -o std_map ${SRC_MAP}
 
 restd: fclean std
+ 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -349,7 +354,6 @@ fclean: clean
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 56):
 	${RM} ${NAME}
 	${RM} ft_map std_map
@@ -432,6 +436,6 @@ reft_map: fclean ft_map
 # strcache performance: lookups = 79 / hit rate = 55%
 # hash-table stats:
 # Load=35/8192=0%, Rehash=0, Collisions=1/79=1%
-# Finished Make data base on Thu Aug  4 13:01:07 2022
+# Finished Make data base on Thu Aug  4 15:57:45 2022
 
  

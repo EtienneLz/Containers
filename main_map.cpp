@@ -24,24 +24,22 @@ int main(void) {
 		c1.insert(map<int, int>::value_type(5, 3));
 		c1.insert(map<int, int>::value_type(6, 3));
 		c1.insert(map<int, int>::value_type(7, 3));
+		c1.insert(map<int, int>::value_type(0, 3));
+		c1.insert(map<int, int>::value_type(-1, 3));
+		c1.insert(map<int, int>::value_type(-2, 3));
+		c1.insert(map<int, int>::value_type(-3, 3));
+		c1.insert(map<int, int>::value_type(8, 3));
+		c1.insert(map<int, int>::value_type(9, 3));
 
 		map<int, int>::iterator it = c1.begin();
 
-		for (int i = 0; i < 7; i++) {
-			std::cout << it++->first << std::endl;
-		}
-
-		if (it == c1.end())
-			std::cout << "True\n";
-		else
-			std::cout << "False\n";
-		/*std::cout << c1.size() << std::endl << std::endl;
+		std::cout << c1.size() << std::endl << std::endl;
 
 		std::cout << c1.end()->first << std::endl << std::endl;
 
 		for (map<int, int>::iterator it = c1.begin(); it != c1.end(); it++) {
 			std::cout << it->first << std::endl;
-		}*/
+		}
 	}
 	/*{
   		map<char,int> mymap;

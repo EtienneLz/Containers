@@ -310,6 +310,7 @@ class RedBlackTree {
 		}
 		_size++;
 		insertFix(node);
+		//TNULL->parent = root;
 		ret.first = iterator(node);
 		ret.second = true;
 		return ret;
@@ -572,8 +573,12 @@ class RedBlackTree {
 
 			std::string sColor = root->color ? "RED" : "BLACK";
 			std::cout << root->data.first << "|" << root->data.second << " (" << sColor << ")";
-			if (root->left->left == NULL && root->right->right == NULL)
-				std::cout << " --- LEAF";
+			if (root->left == TNULL)
+				std::cout << "LNULL ";
+			if (root->right == TNULL)
+				std::cout << "RNULL ";
+			if (root->parent == NULL)
+				std::cout << "PNULL ";
 			std::cout << std::endl;
 			printHelper(root->left, indent, false);
 			printHelper(root->right, indent, true);
