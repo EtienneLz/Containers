@@ -5,8 +5,14 @@
 # include "red_black_tree.hpp"
 
 namespace ft {
+	
+	/*template <class Key, class T>
+	struct Node;
+	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< Node<const Key, T> > >
+	class RedBlackTree;*/
+
 	template <typename T, typename node>
-	class  bidirectional_iterator: iterator <bidirectional_iterator_tag, T>{
+	class  bidirectional_iterator: iterator <bidirectional_iterator_tag, T> {
 		public :
 		typedef typename iterator<bidirectional_iterator_tag, T>::value_type		value_type;
 		typedef ptrdiff_t                          									difference_type;
@@ -16,7 +22,6 @@ namespace ft {
 
 		private:
 			node		*_point;
-
 
 		public:
 		bidirectional_iterator(void) {
@@ -42,6 +47,7 @@ namespace ft {
 
 		bidirectional_iterator&   operator++() {
 			_point = successor(_point);
+			
 			return *this;
 		}
 
@@ -49,7 +55,6 @@ namespace ft {
 			bidirectional_iterator tmp;
 			tmp._point = _point;
 			_point = successor(_point);
-
 			return tmp;
 		}
 
@@ -123,6 +128,8 @@ namespace ft {
 		}
 
 		const_bidirectional_iterator&   operator++() {
+			if (_point->right == NULL && _point->left == NULL)
+				return NULL;
 			_point = successor(_point);
 			return *this;
 		}
@@ -178,6 +185,8 @@ namespace ft {
 		for (InputIterator it(first); it != last; it++) i++;
 		return i;
 	}
+
+	
 
 };
 

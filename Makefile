@@ -50,7 +50,7 @@ std:	${OBJ}
 	$(CC) ${CFLAGS} -D STD -o $(NAME) ${SRC}
 
 clean:
-	${RM} ${OBJ}
+	${RM} ${OBJ} ${OBJ_MAP}
 
 fclean: clean
 	${RM} ${NAME}
