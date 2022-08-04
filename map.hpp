@@ -25,8 +25,8 @@ class map
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename std::size_t                        size_type;
 
-		typedef ft::bidirectional_iterator<value_type, Node<Key, T> >		iterator;
-		typedef ft::bidirectional_iterator<value_type, Node<Key, T> >		const_iterator;
+		typedef ft::bidirectional_iterator<value_type, Node<value_type> >		iterator;
+		typedef ft::bidirectional_iterator<value_type, Node<value_type> >		const_iterator;
 		//typedef std::map<Key, T>::container_type::reverse_iterator       	reverse_iterator;
 		//typedef std::map<Key, T>::container_type::const_reverse_iterator	const_reverse_iterator;
 	
@@ -124,7 +124,7 @@ class map
 		*/
 
 		pair<iterator,bool> insert (const value_type& val) {
-			return _tree.insert(val.first, val.second);
+			return _tree.insert(val);
 		}
 
 		iterator insert (iterator position, const value_type& val) {

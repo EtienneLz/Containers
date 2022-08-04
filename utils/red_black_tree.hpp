@@ -10,23 +10,23 @@
 
 namespace ft
 {
-template <class Key, class T>
+template <typename T>
 struct Node {
-	pair<const Key, T>  	data;
+public:
+	T					  	data;
 	Node                    *parent;
 	Node                    *left;
 	Node                    *right;
 	int                     color;
 
-	Node(Key key, T t): data(key, t) {}
 
-	bool operator==(Node<Key, T> &rhs) {
+	bool operator==(const Node &rhs) {
 		if (parent == rhs.parent && left == rhs.left && right == rhs.right && color == rhs.color)
 			return true;
 		return false;
 	}
 
-	bool operator!=(Node<Key, T> &rhs) {
+	bool operator!=(const Node &rhs) {
 		return !(this == rhs);
 	}
 
@@ -44,23 +44,40 @@ struct Node {
 	}
 };
 
-template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< Node<const Key, T> > >
+template < class Arg1, class Arg2, class Result >
+struct binary_function
+{
+	typedef Arg1		first_type;
+	typedef Arg2		second_type;
+	typedef Result		result_type;
+}; // binary function structure to include in the comparison structure
+
+template < class T >
+struct less : binary_function<T, T, bool>
+{
+	bool		operator() ( const T & x, const T & y) const
+	{
+		return (x < y);
+	}
+};
+
+template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator < pair < const Key, T> > >
 class RedBlackTree {
 
 	public:
 
-	typedef Node<Key,  T>			value_type;
-	typedef Node<Key,  T> 			*NodePtr;
+	typedef Key						key_type;
+	typedef ft::pair<const Key, T>	value_type;
+	typedef Node<value_type>		*NodePtr;
 	typedef typename std::size_t    size_type;
 	typedef T                       mapped_value;
 	typedef	Compare					key_compare;
-	typedef typename Alloc::template rebind<Node<Key,  T> >::other	node_allocator_type;
+	typedef typename Alloc::template rebind<Node<value_type> >::other	node_allocator_type;
 
-	typedef bidirectional_iterator<ft::pair<const Key, T>, Node<Key, T> >		iterator;
+	typedef bidirectional_iterator<ft::pair<const Key, T>, Node<value_type> >		iterator;
 
 	RedBlackTree() {
 		TNULL = _alloc_node.allocate(1);
-		_alloc_two.construct(TNULL, Node<Key, T>(Key(), T()));
 		TNULL->color = 0;
 		TNULL->left = NULL;
 		TNULL->right = NULL;
@@ -77,8 +94,7 @@ class RedBlackTree {
 	}
 
 	~RedBlackTree() {
-		_alloc_node.destroy(TNULL);
-		_alloc_two.deallocate(TNULL, 1);
+		_alloc_node.deallocate(TNULL, 1);
 		deleteAll(root);
 	}
 
@@ -87,8 +103,8 @@ class RedBlackTree {
 			deleteAll(x->left);
 		if (x->right != TNULL)
 			deleteAll(x->right);
-		_alloc_node.destroy(x);
-		_alloc_two.deallocate(x, 1);
+		_alloc_two.destroy(&(x->data));
+		_alloc_node.deallocate(x, 1);
 		_size = 0;
 
 	}
@@ -198,18 +214,18 @@ class RedBlackTree {
 	}
 
 	// Inserting a node
-	pair<iterator, bool> insert(Key key, T val = T()) {
+	pair<iterator, bool> insert(value_type val) {
 		pair<iterator, bool>	ret;
 
-		if (searchTree(key) != TNULL) {
-			ret.first = iterator(searchTree(key));
+		if (searchTree(val.first) != TNULL) {
+			ret.first = iterator(searchTree(val.first));
 			ret.second = false;
 			return ret;
 		}
 		NodePtr node;
 		node = _alloc_node.allocate(1);
-		_alloc_two.construct(node, Node<const Key, T>(key, val));
-		node->parent = TNULL;
+		_alloc_two.construct(&(node->data), val);
+		node->parent = NULL;
 		node->left = TNULL;
 		node->right = TNULL;
 		node->color = RED;
@@ -437,8 +453,8 @@ class RedBlackTree {
 			y->left->parent = y;
 			y->color = z->color;
 		}
-		_alloc_node.destroy(z);
-		_alloc_two.deallocate(z, 1);
+		_alloc_two.destroy(z);
+		_alloc_node.deallocate(z, 1);
 		_size--;
 		if (y_original_color == BLACK) {
 			deleteFix(x);
@@ -502,28 +518,31 @@ class RedBlackTree {
 			}
 
 			std::string sColor = root->color ? "RED" : "BLACK";
-			std::cout << root->data.first << "(" << sColor << ")" << std::endl;
+			std::cout << root->data.first << "|" << root->data.second << " (" << sColor << ")";
+			if (root->left->left == NULL && root->right->right == NULL)
+				std::cout << " --- LEAF";
+			std::cout << std::endl;
 			printHelper(root->left, indent, false);
 			printHelper(root->right, indent, true);
 		}
 	}
 
 };
-template<typename Key, typename T>
-Node<Key, T> *		successor(Node<Key, T> * x)
+template<typename T>
+Node<T> *		successor(Node<T> * x)
 {
+	if (x->right == NULL)
+		return x;
 	if (x->left == NULL)
 		return x;
-	// if the right sub-tree is not null, the successor is the leftmost node in the right sub-tree
 	if (x->right->right != NULL)
 	{
-		Node<Key, T> *	 y = x->right;
+		Node<T> *	 y = x->right;
 		while (y->left->left != NULL)
 			y = y->left;
 		return y;
-	}
-	//else it is the lowest ancestor of x whose left child is also an ancestor of x
-	Node<Key, T> *	 y = x->parent;
+	} 
+	Node<T> *	 y = x->parent;
 	while (y->left != NULL && x == y->right)
 	{
 		x = y;
@@ -532,30 +551,26 @@ Node<Key, T> *		successor(Node<Key, T> * x)
 	return y;
 }
 
-
-//find the predecessor of a given node
-template<typename Key, typename T>
-Node<Key, T> *		predecessor(Node<Key, T> * x)
+template<typename T>
+Node<T> *		predecessor(Node<T> * x)
 {
 	if (x->left == NULL)
 	{
-		Node<Key, T> *	y = x->parent;
+		Node<T> *	y = x->parent;
 		while (y->right->right != NULL)
 		{
 			y = y->right;
 		}
 		return y;
 	}
-	// if the left tree is not null, the predecessor is the right most node in the left sub-tree
 	if (x->left->left != NULL)
 	{
-		Node<Key, T> *	 y = x->left;
+		Node<T> *	 y = x->left;
 		while (y->right->right != NULL)
 			y = y->right;
 		return y;
 	}
-	//else it is the highest ancestor of x whose right child is also an ancestor of x
-	Node<Key, T> * y = x->parent;
+	Node<T> * y = x->parent;
 	while (y->right != NULL && x == y->left)
 	{
 		x = y;

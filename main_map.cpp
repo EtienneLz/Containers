@@ -15,9 +15,9 @@ using namespace NAMESPACE;
 
 int main(void) {
 	{
-		map<const int, int> c1;
+		map<int, int> c1;
 
-    	/*c1.insert(map<int, int>::value_type('a', 1));
+    	c1.insert(map<int, int>::value_type('a', 1));
     	c1.insert(map<int, int>::value_type('b', 2));
     	c1.insert(map<int, int>::value_type('c', 3));
 		c1.insert(map<int, int>::value_type('d', 3));
@@ -26,15 +26,15 @@ int main(void) {
 
 		std::cout << c1.size() << std::endl << std::endl;
 
-		std::cout << c1.end()->second << std::endl << std::endl;*/
+		//std::cout << c1.end()->first << std::endl << std::endl;
 
-		//for (map<int, int>::iterator it = c1.begin(); it != c1.end(); it++) {
-		//	std::cout << it->first << std::endl;
-		//}
+		/*for (map<int, int>::iterator it = c1.begin(); it != c1.end(); it++) {
+			std::cout << it->first << std::endl;*/
+		}
 	// find and show elements
-    	//std::cout << "c1.at('a') == " << c1.at('a') << std::endl;
-    	//std::cout << "c1.at('b') == " << c1.at('b') << std::endl;
-    	//std::cout << "c1.at('c') == " << c1.at('c') << std::endl;
+    	/*std::cout << "c1.at('a') == " << c1.at('a') << std::endl;
+    	std::cout << "c1.at('b') == " << c1.at('b') << std::endl;
+    	std::cout << "c1.at('c') == " << c1.at('c') << std::endl;*/
 	}
 	/*{
   		map<char,int> mymap;

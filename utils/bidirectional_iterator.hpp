@@ -47,6 +47,7 @@ namespace ft {
 
 		bidirectional_iterator&   operator++() {
 			_point = successor(_point);
+			
 			return *this;
 		}
 
@@ -54,7 +55,6 @@ namespace ft {
 			bidirectional_iterator tmp;
 			tmp._point = _point;
 			_point = successor(_point);
-
 			return tmp;
 		}
 
