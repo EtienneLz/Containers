@@ -1,24 +1,21 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 # include <memory>
-# include <map>
 
+# include "utils/lexicographical_compare.hpp"
 # include "utils/red_black_tree.hpp"
 # include "utils/bidirectional_iterator.hpp"
 
 namespace ft
 {
 
-template <class Key,
-			class T,
-			class Compare = std::less<Key>,
-			class Alloc = std::allocator<ft::pair<const Key, T> > >
+template <typename Key, typename T, typename Compare = std::less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
 class map
 {
 	public:
 		typedef Key                                         key_type;
 		typedef T                                           mapped_type;
-		typedef ft::pair<const key_type, mapped_type>       value_type;
+		typedef ft::pair<const key_type, mapped_type>       	value_type;
 		typedef Compare                                     key_compare;
 		typedef Alloc                                       allocator_type;
 		typedef typename allocator_type::reference          reference;
@@ -28,14 +25,15 @@ class map
 		typedef typename allocator_type::difference_type    difference_type;
 		typedef typename std::size_t                        size_type;
 
-		typedef ft::bidirectional_iterator<value_type, ft::Node<Key, T> >		iterator;
-		typedef ft::bidirectional_iterator<value_type, ft::Node<Key, T> >		const_iterator;
+		typedef ft::bidirectional_iterator<value_type, Node<Key, T> >		iterator;
+		typedef ft::bidirectional_iterator<value_type, Node<Key, T> >		const_iterator;
 		//typedef std::map<Key, T>::container_type::reverse_iterator       	reverse_iterator;
 		//typedef std::map<Key, T>::container_type::const_reverse_iterator	const_reverse_iterator;
 	
 	private:
 		allocator_type                          _alloc;
 		ft::RedBlackTree<key_type, mapped_type> _tree;
+		key_compare								_comp;
 
 	public:
 		/*
@@ -45,16 +43,23 @@ class map
 			operator=
 		*/
 		explicit map (const key_compare& comp = key_compare(),
-			  const allocator_type& alloc = allocator_type());
+			  const allocator_type& alloc = allocator_type()) 
+		{
+			_comp = comp;
+			_alloc = alloc;
+		}
 
 		template <class InputIterator>
 			map (InputIterator first, InputIterator last,
 			const key_compare& comp = key_compare(),
 			const allocator_type& alloc = allocator_type());
 
-		map (const map& x);
+		map (const map& x): _comp(x._comp), _alloc(x._alloc)
+		{
+			insert(x.begin(), x.end());
+		}
 
-		~map();
+		~map() {}
 
 		//map& operator= (const map& x);
 
@@ -74,7 +79,7 @@ class map
 		}
 
 		iterator end() {
-			return iterator(_tree.maximum(_tree.getRoot()));
+			return iterator(_tree.end());
 		}
 
 		const_iterator end() const {

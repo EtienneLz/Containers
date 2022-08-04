@@ -12,7 +12,7 @@ namespace ft
 {
 template <class Key, class T>
 struct Node {
-	ft::pair<const Key, T>  data;
+	pair<const Key, T>  	data;
 	Node                    *parent;
 	Node                    *left;
 	Node                    *right;
@@ -29,6 +29,19 @@ struct Node {
 	bool operator!=(Node<Key, T> &rhs) {
 		return !(this == rhs);
 	}
+
+	Node &	operator=( const Node & rhs )
+	{
+		if (this != &rhs)
+		{
+			data = rhs.data;
+			parent = rhs.parent;
+			left = rhs.left;
+			right = rhs.right;
+			color = rhs.color;
+		}
+		return *this;
+	}
 };
 
 template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< Node<const Key, T> > >
@@ -41,27 +54,31 @@ class RedBlackTree {
 	typedef typename std::size_t    size_type;
 	typedef T                       mapped_value;
 	typedef	Compare					key_compare;
+	typedef typename Alloc::template rebind<Node<Key,  T> >::other	node_allocator_type;
 
 	typedef bidirectional_iterator<ft::pair<const Key, T>, Node<Key, T> >		iterator;
 
 	RedBlackTree() {
 		TNULL = _alloc_node.allocate(1);
-		_alloc_node.construct(TNULL, Node<Key, T>(Key(), T()));
+		_alloc_two.construct(TNULL, Node<Key, T>(Key(), T()));
 		TNULL->color = 0;
 		TNULL->left = NULL;
 		TNULL->right = NULL;
+		TNULL->parent = NULL;
 		_size = 0;
-		Node<Key, T> *nRoot = _alloc_node.allocate(1);
-		_alloc_node.construct(nRoot, Node<Key, T>(Key(), T())); 
+		/*Node<Key, T> *nRoot = _alloc_node.allocate(1);
+		_alloc_two.construct(nRoot, Node<Key, T>(Key(), T())); 
 		nRoot->color = BLACK;
 		nRoot->left = TNULL;
 		nRoot->right = TNULL;
-		root = nRoot;
+		nRoot->parent = NULL;
+		root = nRoot;*/
+		root = TNULL;
 	}
 
 	~RedBlackTree() {
 		_alloc_node.destroy(TNULL);
-		_alloc_node.deallocate(TNULL, 1);
+		_alloc_two.deallocate(TNULL, 1);
 		deleteAll(root);
 	}
 
@@ -71,7 +88,7 @@ class RedBlackTree {
 		if (x->right != TNULL)
 			deleteAll(x->right);
 		_alloc_node.destroy(x);
-		_alloc_node.deallocate(x, 1);
+		_alloc_two.deallocate(x, 1);
 		_size = 0;
 
 	}
@@ -112,6 +129,10 @@ class RedBlackTree {
 			node = node->right;
 		}
 		return node;
+	}
+
+	NodePtr end() const {
+		return TNULL;
 	}
 
 	NodePtr successor(NodePtr x) {
@@ -187,8 +208,8 @@ class RedBlackTree {
 		}
 		NodePtr node;
 		node = _alloc_node.allocate(1);
-		_alloc_node.construct(node, Node<const Key, T>(key, val));
-		node->parent = NULL;
+		_alloc_two.construct(node, Node<const Key, T>(key, val));
+		node->parent = TNULL;
 		node->left = TNULL;
 		node->right = TNULL;
 		node->color = RED;
@@ -251,11 +272,18 @@ class RedBlackTree {
 	}
 
 	private:
-		NodePtr         root;
-		NodePtr         TNULL;
-		size_t          _size;
-		NodePtr         _array;
-		Alloc           _alloc_node;
+		NodePtr         	root;
+		NodePtr         	TNULL;
+		size_t          	_size;
+		NodePtr         	_array;
+		node_allocator_type	_alloc_node;
+		Alloc				_alloc_two;
+
+	void initNode(NodePtr node) {
+		node->parent = NULL;
+		node->left = NULL;
+		node->right = NULL;
+	}
 
 	// Preorder
 	void preOrderHelper(NodePtr node) {
@@ -410,7 +438,7 @@ class RedBlackTree {
 			y->color = z->color;
 		}
 		_alloc_node.destroy(z);
-		_alloc_node.deallocate(z, 1);
+		_alloc_two.deallocate(z, 1);
 		_size--;
 		if (y_original_color == BLACK) {
 			deleteFix(x);
@@ -481,5 +509,59 @@ class RedBlackTree {
 	}
 
 };
+template<typename Key, typename T>
+Node<Key, T> *		successor(Node<Key, T> * x)
+{
+	if (x->left == NULL)
+		return x;
+	// if the right sub-tree is not null, the successor is the leftmost node in the right sub-tree
+	if (x->right->right != NULL)
+	{
+		Node<Key, T> *	 y = x->right;
+		while (y->left->left != NULL)
+			y = y->left;
+		return y;
+	}
+	//else it is the lowest ancestor of x whose left child is also an ancestor of x
+	Node<Key, T> *	 y = x->parent;
+	while (y->left != NULL && x == y->right)
+	{
+		x = y;
+		y = y->parent;
+	}
+	return y;
+}
+
+
+//find the predecessor of a given node
+template<typename Key, typename T>
+Node<Key, T> *		predecessor(Node<Key, T> * x)
+{
+	if (x->left == NULL)
+	{
+		Node<Key, T> *	y = x->parent;
+		while (y->right->right != NULL)
+		{
+			y = y->right;
+		}
+		return y;
+	}
+	// if the left tree is not null, the predecessor is the right most node in the left sub-tree
+	if (x->left->left != NULL)
+	{
+		Node<Key, T> *	 y = x->left;
+		while (y->right->right != NULL)
+			y = y->right;
+		return y;
+	}
+	//else it is the highest ancestor of x whose right child is also an ancestor of x
+	Node<Key, T> * y = x->parent;
+	while (y->right != NULL && x == y->left)
+	{
+		x = y;
+		y = y->parent;
+	}
+	return y;
+}
 };
 #endif
