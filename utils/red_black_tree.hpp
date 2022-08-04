@@ -73,15 +73,16 @@ class RedBlackTree {
 	typedef T                       mapped_value;
 	typedef	Compare					key_compare;
 	typedef typename Alloc::template rebind<Node<value_type> >::other	node_allocator_type;
+	typedef Alloc					allocator_type;
 
 	typedef bidirectional_iterator<ft::pair<const Key, T>, Node<value_type> >		iterator;
 
-	RedBlackTree() {
+	RedBlackTree(const allocator_type& alloc = allocator_type()): _alloc_two(alloc), root(NULL) {
 		TNULL = _alloc_node.allocate(1);
 		TNULL->color = 0;
 		TNULL->left = NULL;
 		TNULL->right = NULL;
-		TNULL->parent = NULL;
+		
 		_size = 0;
 		/*Node<Key, T> *nRoot = _alloc_node.allocate(1);
 		_alloc_two.construct(nRoot, Node<Key, T>(Key(), T())); 
@@ -91,6 +92,7 @@ class RedBlackTree {
 		nRoot->parent = NULL;
 		root = nRoot;*/
 		root = TNULL;
+		TNULL->parent = root;
 	}
 
 	~RedBlackTree() {
@@ -149,6 +151,50 @@ class RedBlackTree {
 
 	NodePtr end() const {
 		return TNULL;
+	}
+
+	NodePtr		lower_bound(key_type k) const
+	{
+		NodePtr	x = root;
+		NodePtr	y = root;
+
+		while (x != TNULL)
+		{
+			if (!(key_compare() (x->data.first, k)))
+			{
+				y = x;
+				x = x->left;
+			}
+			else
+			{
+				x = x->right;
+			}
+		}
+		if (key_compare() (y->data.first, k) && x == TNULL)
+			return TNULL;
+		return y;
+	}
+
+	NodePtr		upper_bound(key_type k) const
+	{
+		NodePtr	x = root;
+		NodePtr	y = root;
+
+		while (x != TNULL)
+		{
+			if (key_compare() (k, x->data.first))
+			{
+				y = x;
+				x = x->left;
+			}
+			else
+			{
+				x = x->right;
+			}
+		}
+		if (key_compare() (y->data.first, k) && x == TNULL)
+			return TNULL;
+		return y;
 	}
 
 	NodePtr successor(NodePtr x) {
@@ -277,6 +323,13 @@ class RedBlackTree {
 		deleteNodeHelper(this->root, data);
 	}
 
+	bool erase(Key data) {
+		if (searchTree(data) != TNULL)
+			return false;
+		deleteNode(data);
+		return true;
+	}
+
 	void printTree() {
 		if (root) {
 			printHelper(this->root, "", true);
@@ -288,12 +341,12 @@ class RedBlackTree {
 	}
 
 	private:
+		node_allocator_type	_alloc_node;
+		Alloc				_alloc_two;
 		NodePtr         	root;
 		NodePtr         	TNULL;
 		size_t          	_size;
 		NodePtr         	_array;
-		node_allocator_type	_alloc_node;
-		Alloc				_alloc_two;
 
 	void initNode(NodePtr node) {
 		node->parent = NULL;
