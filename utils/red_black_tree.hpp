@@ -506,7 +506,7 @@ class RedBlackTree {
 			y->left->parent = y;
 			y->color = z->color;
 		}
-		_alloc_two.destroy(z);
+		_alloc_node.destroy(z);
 		_alloc_node.deallocate(z, 1);
 		_size--;
 		if (y_original_color == BLACK) {
@@ -598,6 +598,7 @@ Node<T> *		successor(Node<T> * x)
 	Node<T> *	 y = x->parent;
 	while (y->left != NULL && x == y->right)
 	{
+		//std::cout << y->data.first << std::endl;
 		x = y;
 		y = y->parent;
 	}

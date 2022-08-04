@@ -17,22 +17,33 @@ int main(void) {
 	{
 		map<int, int> c1;
 
-    	c1.insert(map<int, int>::value_type('a', 1));
-    	c1.insert(map<int, int>::value_type('b', 2));
-    	c1.insert(map<int, int>::value_type('c', 3));
-		c1.insert(map<int, int>::value_type('d', 3));
-		c1.insert(map<int, int>::value_type('e', 3));
-		c1.insert(map<int, int>::value_type('f', 3));
+    	c1.insert(map<int, int>::value_type(1, 1));
+    	c1.insert(map<int, int>::value_type(2, 2));
+    	c1.insert(map<int, int>::value_type(3, 3));
+		c1.insert(map<int, int>::value_type(4, 3));
+		c1.insert(map<int, int>::value_type(5, 3));
+		c1.insert(map<int, int>::value_type(6, 3));
+		c1.insert(map<int, int>::value_type(7, 3));
 
-		std::cout << c1.size() << std::endl << std::endl;
+		map<int, int>::iterator it = c1.begin();
 
-		//std::cout << c1.end()->first << std::endl << std::endl;
+		for (int i = 0; i < 7; i++) {
+			std::cout << it++->first << std::endl;
+		}
+
+		if (it == c1.end())
+			std::cout << "True\n";
+		else
+			std::cout << "False\n";
+		/*std::cout << c1.size() << std::endl << std::endl;
+
+		std::cout << c1.end()->first << std::endl << std::endl;
 
 		for (map<int, int>::iterator it = c1.begin(); it != c1.end(); it++) {
 			std::cout << it->first << std::endl;
-		}
+		}*/
 	}
-	{
+	/*{
   		map<char,int> mymap;
 
   		// first insert function version (single parameter):
@@ -55,17 +66,17 @@ int main(void) {
   		anothermap.insert(mymap.begin(),mymap.find('c'));
 
   		// showing contents:
-  		/*std::cout << "mymap contains:\n";
+  		std::cout << "mymap contains:\n";
   		for (it=mymap.begin(); it!=mymap.end(); ++it)
     	std::cout << it->first << " => " << it->second << '\n';
 
   		std::cout << "anothermap contains:\n";
   		for (it=anothermap.begin(); it!=anothermap.end(); ++it)
-    	std::cout << it->first << " => " << it->second << '\n';*/
+    	std::cout << it->first << " => " << it->second << '\n';
 	}
 	{
-  		std::map<char,int> mymap;
-  		std::map<char,int>::iterator it;
+  		map<char,int> mymap;
+  		map<char,int>::iterator it;
 
   		// insert some values:
   		mymap['a']=10;
@@ -76,16 +87,16 @@ int main(void) {
   		mymap['f']=60;
 
   		it=mymap.find('b');
-  		mymap.erase (it);                   // erasing by iterator
+  		//mymap.erase (it);                   // erasing by iterator
 
   		mymap.erase ('c');                  // erasing by key
 
-  		it=mymap.find ('e');
-  		mymap.erase ( it, mymap.end() );    // erasing by range
+  		//it=mymap.find ('e');
+  		//mymap.erase ( it, mymap.end() );    // erasing by range
 
   		// show content:
-  		/*for (it=mymap.begin(); it!=mymap.end(); ++it)
-    		std::cout << it->first << " => " << it->second << '\n';*/
+  		for (it=mymap.begin(); it!=mymap.end(); ++it)
+    		std::cout << it->first << " => " << it->second << '\n';
 }
 {
   		std::map<char,int> mymap;
@@ -103,7 +114,7 @@ int main(void) {
   		mymap.erase(itlow,itup);        // erases [itlow,itup)
 
   		// print content:
-  		/*for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-    		std::cout << it->first << " => " << it->second << '\n';*/
-}
+  		for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+    		std::cout << it->first << " => " << it->second << '\n';
+}*/
 }

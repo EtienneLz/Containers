@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Aug  4 11:44:11 2022
+# Make data base, printed on Thu Aug  4 13:01:07 2022
 
 # Variables
 
@@ -69,6 +69,7 @@ XDG_DATA_DIRS = /usr/share/gnome:/usr/share/ubuntu:/mnt/nfs/homes/elouchez/.loca
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/38273/bus
 # environment
+ 
 VSCODE_VERBOSE_LOGGING = true
 # environment
 MANAGERPID = 80033
@@ -285,7 +286,6 @@ fre: fclean all
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
- 
 
 all: containers
 #  Phony target (prerequisite of .PHONY).
@@ -321,7 +321,7 @@ main_map.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-01 18:13:28.93722857
+#  Last modified 2022-08-04 13:01:02.451633561
 #  File has been updated.
 #  Successfully updated.
 
@@ -333,7 +333,7 @@ restd_map: fclean std_map
 # Not a target:
 main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-01 15:35:21.364168806
+#  Last modified 2022-08-04 11:44:40.812900507
 #  File has been updated.
 #  Successfully updated.
 
@@ -349,6 +349,7 @@ fclean: clean
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
+ 
 #  recipe to execute (from 'Makefile', line 56):
 	${RM} ${NAME}
 	${RM} ft_map std_map
@@ -376,7 +377,7 @@ clean:
 #  File does not exist.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 53):
-	${RM} ${OBJ}
+	${RM} ${OBJ} ${OBJ_MAP}
 
 ft: main.o
 #  Implicit rule search has not been done.
@@ -431,6 +432,6 @@ reft_map: fclean ft_map
 # strcache performance: lookups = 79 / hit rate = 55%
 # hash-table stats:
 # Load=35/8192=0%, Rehash=0, Collisions=1/79=1%
-# Finished Make data base on Thu Aug  4 11:44:11 2022
+# Finished Make data base on Thu Aug  4 13:01:07 2022
 
  
