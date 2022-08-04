@@ -310,6 +310,7 @@ class RedBlackTree {
 		}
 		_size++;
 		insertFix(node);
+		//TNULL->parent = root;
 		ret.first = iterator(node);
 		ret.second = true;
 		return ret;
@@ -506,7 +507,7 @@ class RedBlackTree {
 			y->left->parent = y;
 			y->color = z->color;
 		}
-		_alloc_two.destroy(z);
+		_alloc_node.destroy(z);
 		_alloc_node.deallocate(z, 1);
 		_size--;
 		if (y_original_color == BLACK) {
@@ -572,8 +573,12 @@ class RedBlackTree {
 
 			std::string sColor = root->color ? "RED" : "BLACK";
 			std::cout << root->data.first << "|" << root->data.second << " (" << sColor << ")";
-			if (root->left->left == NULL && root->right->right == NULL)
-				std::cout << " --- LEAF";
+			if (root->left == TNULL)
+				std::cout << "LNULL ";
+			if (root->right == TNULL)
+				std::cout << "RNULL ";
+			if (root->parent == NULL)
+				std::cout << "PNULL ";
 			std::cout << std::endl;
 			printHelper(root->left, indent, false);
 			printHelper(root->right, indent, true);
@@ -598,6 +603,7 @@ Node<T> *		successor(Node<T> * x)
 	Node<T> *	 y = x->parent;
 	while (y->left != NULL && x == y->right)
 	{
+		//std::cout << y->data.first << std::endl;
 		x = y;
 		y = y->parent;
 	}

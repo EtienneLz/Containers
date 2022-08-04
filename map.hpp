@@ -145,6 +145,14 @@ class map
 		size_type max_size() const {
 			return _alloc.max_size();
 		}
+		/*
+			ELEMENT ACCESS
+			operator[]
+		*/
+
+		mapped_type& operator[] (const key_type& k) {
+			return this->insert(value_type(k, mapped_type())).first->second;
+		}
 
 		/*
 			MODIFIERS
