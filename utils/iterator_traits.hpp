@@ -54,13 +54,3 @@ struct iterator_traits < const T* >
 }
 
 #endif
-
-
-// needed for ptrdif_t type definition
-
-namespace ft
-{
-
-
-
-}

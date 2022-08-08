@@ -18,41 +18,15 @@ namespace ft
 
 
 		public:
-		//CONSTRUCTORS
-	reverse_iterator( void ): _point()
-	{
-		//nothing here
-	}
+	reverse_iterator( void ): _point() {}
 
-	explicit reverse_iterator( iterator_type x ): _point(x)
-	{
-		//nothing here
-	}
+	explicit reverse_iterator( iterator_type x ): _point(x) {}
 
 	template<class U>
-	reverse_iterator( const reverse_iterator<U> & x ): _point(x.base())
-	{
-		//nothing here
-	}
+	reverse_iterator( const reverse_iterator<U> & x ): _point(x.base()) {}
 
-	//DESTRUCTORS
-	~reverse_iterator( void )
-	{
-		//nothing here
-	}
+	~reverse_iterator( void ) {}
 
-	//ASSIGNATION OPERATOR OVERLOAD
-	// template<class Iter>
-	// reverse_iterator	operator=( const reverse_iterator<Iter> & rhs )
-	// {
-	// 	if (reinterpret_cast< const void * >(this) != reinterpret_cast< const void * >(&rhs))
-	// 	{
-	// 		_point = rhs.base();
-	// 	}
-	// 	return *this;
-	// }
-
-	//DEREFERENCING AS AN RVALUE
 	reference		operator*( void ) const
 	{
 		Iterator	temp = _point;
@@ -64,7 +38,6 @@ namespace ft
 		return &(operator*());
 	}
 
-	//INCREMENTATION AND DECREMENTATION OPERATORS
 	reverse_iterator &		operator++( void )
 	{
 		--_point;
@@ -93,7 +66,6 @@ namespace ft
 		return (copy);
 	}
 
-	//ARITHMETIC OPERATORS
 	reverse_iterator		operator+( difference_type n ) const
 	{
 		reverse_iterator	temp(_point - n);
@@ -118,26 +90,22 @@ namespace ft
 		return *this;
 	}
 
-	//OFFSET DEREFERENCE OFFSET OPERATOR
 	reference				operator[]( difference_type n ) const
 	{
 		return *(*this + n);
 	}
 
-	//BASE FUNCTION FOR NON-MEMBER FUNCTIONS TO GET ACCESS TO _ptr
 	Iterator				base( void ) const
 	{
 		return _point;
 	}
 
-	//ALLOWING COMPARISON BETWEEN CONST AND NON-CONST REVERSE_ITERATOR
 	operator reverse_iterator<const Iterator> () const
 	{
 		return (reverse_iterator<const Iterator>(_point));
 	}
 };
 
-// NON-MEMBER EQUALITY/INEQUALITY COMPARISONS AND FUNCTIONS FOR 2 REVERSE_ITERATORS
 template<typename Iterator>
 bool			operator==(const reverse_iterator<Iterator> & lhs, const reverse_iterator<Iterator> & rhs)
 {
@@ -174,7 +142,6 @@ bool			operator>=(const reverse_iterator<Iterator> & lhs, const reverse_iterator
 	return (!(lhs < rhs));
 }
 
-// NON-MEMBER EQUALITY/INEQUALITY COMPARISONS AND FUNCTIONS FOR A REVERSE_ITERATOR AND A CONST REVERSE ITERATOR
 template<typename Iter_lhs, typename Iter_rhs>
 bool			operator==(const reverse_iterator<Iter_lhs> & lhs, const reverse_iterator<Iter_rhs> & rhs)
 {
@@ -229,6 +196,6 @@ typename reverse_iterator<Iter_lhs>::difference_type	operator-(const reverse_ite
 	return (y.base() - x.base());
 }
 
-}; // end of namespace ft
+};
 
 #endif

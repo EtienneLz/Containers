@@ -50,7 +50,7 @@ struct binary_function
 	typedef Arg1		first_type;
 	typedef Arg2		second_type;
 	typedef Result		result_type;
-}; // binary function structure to include in the comparison structure
+};
 
 template < class T >
 struct less : binary_function<T, T, bool>

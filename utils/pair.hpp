@@ -13,34 +13,19 @@ template <class T1, class T2> struct pair
         first_type  first;
         second_type second;
 
-        pair(): first(), second()
-	{
-		// nothing here
-	}
+        pair(): first(), second() {}
 
-	pair( const T1 & x, const T2 & y): first(x), second(y)
-	{
-		// nothing here
-	}
+	pair( const T1 & x, const T2 & y): first(x), second(y) {}
 
-	pair( T1 & x, T2 & y): first(x), second(y)
-	{
-		// nothing here
-	}
+	pair( T1 & x, T2 & y): first(x), second(y) {}
 
 	template< class U1, class U2 >
-	pair( const pair<U1, U2> & p ): first(p.first), second(p.second)
-	{
-		// nothing here
-	}
+	pair( const pair<U1, U2> & p ): first(p.first), second(p.second) {}
         pair& operator=(const pair& pr) {
             first = pr.first;
             second = pr.second;
             return *this;
         }
-
-        
-
 };
 
     template <class T1, class T2>

@@ -86,7 +86,9 @@ class map
 
 		map &	operator=(const map & rhs)
 		{
-			if (this != &rhs)
+			if (rhs.empty())
+				this->clear();
+			else if (this != &rhs)
 			{
 				this->clear();
 				_tree.reassign_root();
