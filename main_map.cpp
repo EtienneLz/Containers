@@ -241,7 +241,7 @@ std::cout << std::endl;
 	mymap.get_allocator().deallocate(p,5);
 }
 std::cout << std::endl;
-/*{
+{
   	map<char,int> mymap;
 
   	map<char,int>::key_compare mycomp = mymap.key_comp();
@@ -260,7 +260,7 @@ std::cout << std::endl;
   	} while ( mycomp((*it++).first, highest) );
 
   	std::cout << '\n';
-}*/
+}
 std::cout << std::endl;
 {
   	map<char,int> mymap;
@@ -375,7 +375,7 @@ std::cout << std::endl;
 
   	foo['x']=100;
   	foo['y']=200;
-
+													C ICI QUE CA BUG C GRANDS MORTS
   	bar['a']=11;
   	bar['b']=22;
   	bar['c']=33;
