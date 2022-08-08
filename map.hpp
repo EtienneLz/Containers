@@ -7,11 +7,13 @@
 # include "utils/bidirectional_iterator.hpp"
 # include "utils/equal.hpp"
 # include "utils/reverse_iterators.hpp"
+# include "utils/equal.hpp"
+# include "utils/lexicographical_compare.hpp"
 
 namespace ft
 {
 
-template <typename Key, typename T, typename Compare = std::less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
+template <typename Key, typename T, typename Compare = less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
 class map
 {
 	public:
@@ -24,13 +26,13 @@ class map
 		typedef typename allocator_type::const_reference    const_reference;
 		typedef typename allocator_type::pointer            pointer;
 		typedef typename allocator_type::const_pointer      const_pointer;
-		typedef typename allocator_type::difference_type    difference_type;
+		typedef	std::ptrdiff_t								difference_type;
 		typedef typename std::size_t                        size_type;
 
-		typedef ft::bidirectional_iterator<value_type, Node<value_type> >		iterator;
-		typedef ft::bidirectional_iterator<value_type, Node<value_type> >		const_iterator;
-		typedef ft::reverse_iterator<iterator>              					reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>        					const_reverse_iterator;
+		typedef ft::bidirectional_iterator<value_type, ft::Node<value_type> >		iterator;
+		typedef ft::bidirectional_iterator<const value_type, ft::Node<value_type> >	const_iterator;
+		typedef ft::reverse_iterator<iterator>              						reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>        						const_reverse_iterator;
 	
 	private:
 		allocator_type                          _alloc;

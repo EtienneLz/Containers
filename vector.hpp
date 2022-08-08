@@ -21,18 +21,18 @@ namespace ft
 		get_allocator
 	*/
 		public:
-			typedef T                                           value_type;
-			typedef Alloc                                       allocator_type;
-			typedef typename allocator_type::reference          reference;
-			typedef typename allocator_type::const_reference    const_reference;
-			typedef typename allocator_type::pointer            pointer;
-			typedef typename allocator_type::const_pointer      const_pointer;
-			typedef typename allocator_type::difference_type    difference_type;
-			typedef typename std::size_t                        size_type;
-			typedef ft::random_access_iterator<T>               iterator;
-			typedef ft::const_random_access_iterator<T>         const_iterator;
-			typedef ft::reverse_iterator<iterator>              reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>        const_reverse_iterator;
+			typedef T												value_type;
+			typedef Alloc											allocator_type;
+			typedef std::size_t										size_type;
+			typedef std::ptrdiff_t									difference_type;
+			typedef value_type &									reference;
+			typedef const value_type &								const_reference;
+			typedef typename allocator_type::pointer				pointer;
+			typedef typename allocator_type::const_pointer			const_pointer;
+			typedef ft::random_access_iterator<value_type>			iterator;
+			typedef	ft::random_access_iterator<const value_type>	const_iterator;
+			typedef	ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef	ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
 			explicit vector(const allocator_type& alloc = allocator_type()) {
 				_alloc = alloc;
@@ -69,8 +69,12 @@ namespace ft
 				_array = NULL;
 			}
 
-			vector(const vector<T>& src) {
-				*this = src;
+			vector(const vector<T>& src):  _size(src._size), _capacity(src._size) {
+				_array = _alloc.allocate(_capacity);
+				for (size_type i = 0; i < _size; i++)
+				{
+					_alloc.construct(_array + i, src[i]);
+				}
 			}
 			vector& operator=(const vector<T>& rhs) {
 				_alloc = rhs._alloc;
@@ -127,10 +131,14 @@ namespace ft
 			}
 
 			reference   at(size_type pos) {
+				if (!(pos < _size))
+					throw std::out_of_range("vector");
 				return _array[pos];
 			}
 
 			const_reference   at(size_type pos) const {
+				if (!(pos < _size))
+					throw std::out_of_range("vector");
 				return _array[pos];
 			}
 
@@ -235,11 +243,28 @@ namespace ft
 		swap *
 	*/
 			void    assign(size_type n, const value_type& val) {
-				this->clear();
+				if (n == 0)
+					return ;
 				if (n > _capacity)
-					this->reserve(n);
-				for (size_type i(0); i < n; i++)
-					push_back(val);
+				{
+					this->clear();
+					_alloc.deallocate(_array, _capacity);
+					_array = NULL;
+					_capacity = 0;
+					_size = n;
+					_capacity = n;
+					_array = _alloc.allocate(_capacity);
+					for (size_type i = 0; i < n; i++)
+						_alloc.construct(_array + i, val);
+				}
+				else
+				{
+					for (size_type i = 0; i < _size; i++)
+						_alloc.destroy(_array + i);
+					_size = n;
+					for (size_type i = 0; i < _size; i++)
+						_alloc.construct(_array + i, val);
+				}
 			}
 
 			template    <class InputIterator>
@@ -330,45 +355,34 @@ namespace ft
 			}
 
 			iterator erase (iterator position) {
-				iterator            it = begin();
-				ft::difference_type diff;
-				size_type           tmp_pos;
-				diff = ft::distance(it, position);
-				tmp_pos = static_cast<size_type>(diff);
-				_alloc.construct(&_array[tmp_pos], _array[tmp_pos - 1]);
-				it = end();
-				while (diff < static_cast<ft::difference_type>(_size)) {
-					diff++;
-					it--;
-					_array[tmp_pos] = _array[tmp_pos + 1];
-					tmp_pos++;
-				}
-				_alloc.destroy(&_array[tmp_pos]);
-				_size--;
-				return it;
+				return (erase(position, position + 1));
 			}
 
 			iterator erase (iterator first, iterator last) {
-				iterator            it = begin();
-				ft::difference_type diff;
-				size_type           n;
-				n = static_cast<size_type>(ft::distance(first, last));
-				diff = ft::distance(it, first);
-				size_type   tmp_pos;
-				tmp_pos = static_cast<size_type>(diff);
-				it = end();
-				while (diff < static_cast<difference_type>(_size - n)) {
-					_array[tmp_pos] = _array[tmp_pos + n];
-					tmp_pos++;
-					diff++;
-					it--;
+				size_type	len;
+			
+				len = ft::distance(first, last);
+				if (last == end())
+				{
+					for (size_type i = 0; i < len; i++)
+						pop_back();
+					return end();
 				}
-				for (size_type i = 0; i < n; i++) {
-					_alloc.destroy(&_array[tmp_pos]);
-					tmp_pos++;
+				else
+				{
+					iterator	ret = first;
+					while (last != end()) {
+						*first = *last;
+						first++;
+						last++;
+					}
+					while (len > 0) {
+						_size--;
+						_alloc.destroy(&(_array[_size]));
+						len--;
+					}
+					return ret;
 				}
-				_size -= n;
-				return it;
 			}
 
 			void    push_back (const value_type& val) {
@@ -409,27 +423,29 @@ namespace ft
 			}
    
 			void    swap(vector &x) {
-				if (this == &x)
-					return ;
-				Alloc       alloc_tmp;
-				size_type   size_tmp;
-				size_type   capacity_tmp;
-				T           *array_tmp;
+				value_type		*copy_array;
+				size_type		copy_size;
+				//size_type		copy_max_size;
+				allocator_type	copy_alloc;
+				size_type		copy_capacity;
 
-				alloc_tmp = x._alloc;
-				array_tmp = x._array;
-				capacity_tmp = x._capacity;
-				size_tmp = x._size;
+				copy_array = _array;
+				copy_size = _size;
+				//copy_max_size = _max_size;
+				copy_alloc = _alloc;
+				copy_capacity = _capacity;
 
-				x._alloc = this->_alloc;
-				x._array = this->_array;
-				x._capacity = this->_capacity;
-				x._size = this->_size;
+				_array = x._array;
+				_size = x._size;
+				//_max_size = other._max_size;
+				_alloc = x._alloc;
+				_capacity = x._capacity;
 
-				this->_alloc = alloc_tmp;
-				this->_array = array_tmp;
-				this->_capacity = capacity_tmp;
-				this->_size = size_tmp;
+				x._array = copy_array;
+				x._size = copy_size;
+				//other._max_size = copy_max_size;
+				x._alloc = copy_alloc;
+				x._capacity = copy_capacity;
 			}
 	};
 	/*

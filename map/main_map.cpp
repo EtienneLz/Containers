@@ -1,8 +1,8 @@
-#include "utils/make_pair.hpp"
+#include "../utils/make_pair.hpp"
 #include <iostream>
 
 
-#include "map.hpp"
+#include "../map.hpp"
 #include <map>
 
 #ifndef STD
@@ -36,7 +36,6 @@ int main(void) {
 
 		std::cout << c1.size() << std::endl << std::endl;
 
-		//std::cout << c1.end()->first << std::endl << std::endl;
 
 		for (map<int, int>::iterator it = c1.begin(); it != c1.end(); it++) {
 			std::cout << it->first << std::endl;
@@ -370,19 +369,17 @@ std::cout << std::endl;
   	} while ( mymap.value_comp()(*it++, highest) );
 }
 std::cout << std::endl;
-/*{
+{
   	map<char,int> foo,bar;
 
   	foo['x']=100;
   	foo['y']=200;
-													C ICI QUE CA BUG C GRANDS MORTS
+													//C ICI QUE CA BUG C GRANDS MORTS
   	bar['a']=11;
   	bar['b']=22;
   	bar['c']=33;
 
   	foo.swap(bar);
-
-	std::cout << bar.begin()->first << std::endl;
 
   	std::cout << "foo contains:\n";
   	for (map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
@@ -391,7 +388,7 @@ std::cout << std::endl;
   	std::cout << "bar contains:\n";
   	for (map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
     	std::cout << it->first << " => " << it->second << '\n';
-}*/
+}
 std::cout << std::endl;
 {
   	map<char,int> mymap;

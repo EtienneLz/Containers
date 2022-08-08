@@ -142,6 +142,7 @@ bool			operator>=(const reverse_iterator<Iterator> & lhs, const reverse_iterator
 	return (!(lhs < rhs));
 }
 
+// NON-MEMBER EQUALITY/INEQUALITY COMPARISONS AND FUNCTIONS FOR A REVERSE_ITERATOR AND A CONST REVERSE ITERATOR
 template<typename Iter_lhs, typename Iter_rhs>
 bool			operator==(const reverse_iterator<Iter_lhs> & lhs, const reverse_iterator<Iter_rhs> & rhs)
 {

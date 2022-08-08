@@ -61,7 +61,7 @@ struct less : binary_function<T, T, bool>
 	}
 };
 
-template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator < pair < const Key, T> > >
+template < class Key, class T, class Compare = less<Key>, class Alloc = std::allocator < pair < const Key, T> > >
 class RedBlackTree {
 
 	public:
@@ -392,6 +392,10 @@ class RedBlackTree {
 		return TNULL;
 	}
 
+	void	setEnd() {
+		_end = maximum(root)->right;
+	}
+
 	void		swap( RedBlackTree & rhs) {
 		allocator_type			tmp_two_alloc = rhs.getAllocator();
 		node_allocator_type		tmp_node_alloc = rhs.getNodeAlloc();
@@ -410,8 +414,8 @@ class RedBlackTree {
 		root = tmp_root;
 		TNULL = tmp_TNULL;
 		_size = tmp_size;
-		//_end = maximum(root)->right;
-		//rhs._end = maximum(rhs.getRoot())->right;
+		_end = maximum(root)->right;
+		rhs.setEnd();
 	}
 
 	private:
