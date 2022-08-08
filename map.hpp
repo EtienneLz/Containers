@@ -34,7 +34,7 @@ class map
 	
 	private:
 		allocator_type                          _alloc;
-		ft::RedBlackTree<key_type, mapped_type> _tree;
+		ft::RedBlackTree<key_type, mapped_type, Compare, Alloc> _tree;
 		key_compare								_comp;
 
 	public:
@@ -84,7 +84,16 @@ class map
 
 		~map() {}
 
-		//map& operator= (const map& x);
+		map &	operator=(const map & rhs)
+		{
+			if (this != &rhs)
+			{
+				this->clear();
+				_tree.reassign_root();
+				insert(rhs.begin(), rhs.end());
+			}
+			return *this;
+		}
 
 		/*
 			ITERATORS
@@ -194,10 +203,12 @@ class map
 			return 0;
 		}
 
-		//void swap (map& x);
+		void swap (map& x) {
+			this->_tree.swap(x._tree);
+		}
 		
 		void clear() {
-			_tree.deleteAll();
+			_tree.clear();
 		}
 		/*
 			LOOKUP
@@ -208,18 +219,18 @@ class map
 			upper_bound
 		*/
 
-		size_type count( const Key& key ) const {
-			if (_tree.searchTree(key) != NULL)
-				return 1;
-			return 0;
-		}
-
 		iterator find( const Key& key ) {
 			return iterator(_tree.searchTree(key));
 		}
 	
 		const_iterator find( const Key& key ) const {
 			return const_iterator(_tree.searchTree(key));
+		}
+
+		size_type count( const Key& key ) const {
+			if (find(key) == this->end())
+				return 0;
+		 return 1;
 		}
 
 		iterator lower_bound (const key_type& k) {

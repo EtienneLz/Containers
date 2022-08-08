@@ -13,7 +13,9 @@ int main() {
 	bst.insert(ft::make_pair(7, 1));*/
 	bst.printTree();
 
-	bst.test();
+	bst.deleteAll(bst.getRoot());
+
+	//bst.test();
 
 	/*ft::RedBlackTree<int, int>::iterator it(bst.minimum(bst.getRoot()));
 	it++;
