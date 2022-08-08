@@ -14,7 +14,7 @@
 using namespace NAMESPACE;
 
 int main(void) {
-	{
+	/*{
 		map<int, int> c1;
 
     	c1.insert(map<int, int>::value_type(1, 1));
@@ -30,17 +30,21 @@ int main(void) {
 		c1.insert(map<int, int>::value_type(-3, 3));
 		c1.insert(map<int, int>::value_type(8, 3));
 		c1.insert(map<int, int>::value_type(9, 3));
+		c1.insert(map<int, int>::value_type(10, 3));
 
 		map<int, int>::iterator it = c1.begin();
 
 		std::cout << c1.size() << std::endl << std::endl;
 
-		std::cout << c1.end()->first << std::endl << std::endl;
+		//std::cout << c1.end()->first << std::endl << std::endl;
 
 		for (map<int, int>::iterator it = c1.begin(); it != c1.end(); it++) {
 			std::cout << it->first << std::endl;
 		}
-	}
+		it = c1.end();
+		it--;
+		std::cout << it->first << std::endl;
+	}*/
 	/*{
   		map<char,int> mymap;
 
@@ -71,7 +75,7 @@ int main(void) {
   		std::cout << "anothermap contains:\n";
   		for (it=anothermap.begin(); it!=anothermap.end(); ++it)
     	std::cout << it->first << " => " << it->second << '\n';
-	}
+	}*/
 	{
   		map<char,int> mymap;
   		map<char,int>::iterator it;
@@ -84,21 +88,21 @@ int main(void) {
   		mymap['e']=50;
   		mymap['f']=60;
 
-  		it=mymap.find('b');
-  		//mymap.erase (it);                   // erasing by iterator
+ 		it=mymap.find('b');
 
-  		mymap.erase ('c');                  // erasing by key
 
   		//it=mymap.find ('e');
-  		//mymap.erase ( it, mymap.end() );    // erasing by range
+
+		//std::cout << it->first << " => " << it->second << '\n';
+  		mymap.erase ( it, mymap.end() );    // erasing by range
 
   		// show content:
   		for (it=mymap.begin(); it!=mymap.end(); ++it)
     		std::cout << it->first << " => " << it->second << '\n';
 }
-{
-  		std::map<char,int> mymap;
-  		std::map<char,int>::iterator itlow,itup;
+/*{
+  		map<char,int> mymap;
+  		map<char,int>::iterator itlow,itup;
 
   		mymap['a']=20;
   		mymap['b']=40;
@@ -112,7 +116,7 @@ int main(void) {
   		mymap.erase(itlow,itup);        // erases [itlow,itup)
 
   		// print content:
-  		for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+  		for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
     		std::cout << it->first << " => " << it->second << '\n';
 }*/
 }

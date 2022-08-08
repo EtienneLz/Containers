@@ -62,6 +62,8 @@ reft_map: fclean ft_map
 
 restd_map: fclean std_map
 
+remap: fclean ft_map std_map
+
 reft: fclean ft
 
 restd: fclean std

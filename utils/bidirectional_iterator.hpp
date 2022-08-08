@@ -60,6 +60,7 @@ namespace ft {
 
 		bidirectional_iterator&   operator--() {
 			_point = predecessor(_point);
+			
 			return *this;
 		}
 
@@ -88,7 +89,7 @@ namespace ft {
 		}
 
 		friend bool        operator!=(const bidirectional_iterator<T, node> &lhs, const bidirectional_iterator<T, node> &rhs) {
-			return lhs._point != rhs._point;
+			return !(lhs == rhs);
 		}
 	};
 
@@ -102,16 +103,18 @@ namespace ft {
 		typedef random_access_iterator_tag    		iterator_category;
 
 		private:
-			pointer    _point;
-
+			pointer	_point;
+			bool	_end;
 
 		public:
 		const_bidirectional_iterator(void) {
 			_point = NULL;
+			_end = false;
 		}
 
 		const_bidirectional_iterator(pointer p) {
 			_point = p;
+			_end = false;
 		}
 
 		~const_bidirectional_iterator() {}
@@ -123,14 +126,14 @@ namespace ft {
 		const_bidirectional_iterator& operator=(const const_bidirectional_iterator<T> &rhs) {
 			if (this != &rhs) {
 				_point = rhs._point;
+				_end = rhs._end;
 			}
 			return *this;
 		}
 
 		const_bidirectional_iterator&   operator++() {
-			if (_point->right == NULL && _point->left == NULL)
-				return NULL;
-			_point = successor(_point);
+				_point = successor(_point);
+
 			return *this;
 		}
 
@@ -168,11 +171,11 @@ namespace ft {
 		}
 
 		friend bool        operator==(const const_bidirectional_iterator<T> &lhs, const const_bidirectional_iterator<T> &rhs) {
-			return lhs._point == rhs._point;
+			return (lhs._point == rhs._point && lhs._end == rhs._end);
 		}
 
 		friend bool        operator!=(const const_bidirectional_iterator<T> &lhs, const const_bidirectional_iterator<T> &rhs) {
-			return lhs._point != rhs._point;
+			return !(lhs != rhs);
 		}
 	};
 

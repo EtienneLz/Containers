@@ -178,14 +178,13 @@ class map
 		}
 
 		void erase (iterator position) {
-			_tree.deleteNode(position->first);
+			_tree.erase(position->first);
 		}
 
 		void erase( iterator first, iterator last ) {
 			while (first != last) {
-				first = find(first.first);
-				erase(first);
-				first++;
+				first = find(first->first);
+				erase(first++);
 			}
 		}
 

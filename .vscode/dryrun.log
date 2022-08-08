@@ -1,13 +1,4 @@
-<<<<<<< HEAD
-make.exe --dry-run --always-make --keep-going --print-directory
+make.exe --dry-run --keep-going --print-directory
 'make.exe' n'est pas reconnu en tant que commande interne
 ou externe, un programme ex�cutable ou un fichier de commandes.
 
-=======
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/mnt/nfs/homes/elouchez/Documents/Containers'
-clang++ -Wall -Wextra -Werror -std=c++98 -I. -o main.o -c main.cpp
-clang++ -Wall -Wextra -Werror -std=c++98 -I. main.o -o containers 
-make: Leaving directory '/mnt/nfs/homes/elouchez/Documents/Containers'
- 
->>>>>>> d248207b65c5c6956be2098860439e38633cd6fe
