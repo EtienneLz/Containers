@@ -17,6 +17,7 @@ NAME		=	containers
 SRC_VECTOR	=	vector/main_vector.cpp
 SRC_STACK	=	stack/main_stack.cpp
 SRC_MAP		=	map/main_map.cpp
+SRC_TIME_MAP = map/time_benchmark_map.cpp
 
 # ################################## #
 #               OBJECTS              #
@@ -24,6 +25,7 @@ SRC_MAP		=	map/main_map.cpp
 OBJ_VECTOR	:=	${SRC_VECTOR:.cpp=.o}
 OBJ_MAP		:=	${SRC_MAP:.cpp=.o}
 OBJ_STACK	:=	${SRC_STACK:.cpp=.o}
+OBJ_TIME_MAP :=	${SRC_TIME_MAP:.cpp=.o}
 
 # ################################## #
 #                FLAGS               #
@@ -62,12 +64,16 @@ ft_stack:	${OBJ_STACK}
 std_stack:	${OBJ_STACK}
 	$(CC) ${CFLAGS} -D STD -o std_stack ${SRC_STACK}
 
+time_map: ${OBJ_TIME_MAP}
+		$(CC) ${CFLAGS} -o ft_time_map ${SRC_TIME_MAP}
+		$(CC) ${CFLAGS} -D STD -o std_time_map ${SRC_TIME_MAP}
+
 clean:
 	${RM} ${OBJ_VECTOR} ${OBJ_STACK} ${OBJ_MAP}
 
 fclean: clean
-	${RM} ${NAME}
-	${RM} ft_map std_map ft_vector std_vector ft_stack std_stack ft_set std_set
+	${RM} ${NAME} ${OBJ_TIME_MAP}
+	${RM} ft_map std_map ft_vector std_vector ft_stack std_stack ft_set std_set std_time_map ft_time_map
 
 re: clean all
 
