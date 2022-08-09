@@ -85,13 +85,6 @@ class RedBlackTree {
 		_end = NULL;
 		
 		_size = 0;
-		/*Node<Key, T> *nRoot = _alloc_node.allocate(1);
-		_alloc_two.construct(nRoot, Node<Key, T>(Key(), T())); 
-		nRoot->color = BLACK;
-		nRoot->left = TNULL;
-		nRoot->right = TNULL;
-		nRoot->parent = NULL;
-		root = nRoot;*/
 		root = TNULL;
 		TNULL->parent = root;
 	}
@@ -106,6 +99,7 @@ class RedBlackTree {
 		deleteAll(root);
 		_size = 0;
 		root = TNULL;
+		_end = root;
 	}
 
 	void	deleteAll(NodePtr x) {
@@ -168,10 +162,9 @@ class RedBlackTree {
 	}
 
 	NodePtr maximum(NodePtr node) const {
-		while (node->right != TNULL) {
-			node = node->right;
-		}
-		return node;
+		while (node->right->right != NULL)
+		node = node->right;
+ 	return node;
 	}
 
 	NodePtr end() const {
@@ -350,10 +343,16 @@ class RedBlackTree {
 
 	void deleteNode(Key data) {
 		deleteNodeHelper(this->root, data);
-		if (_size > 0)
-			_end = maximum(root)->right;
-		else
+		if (_size > 0) {
+			//std::cout << "bonjour " << maximum(root)->right->data.second << std::endl;
+			_end = maximum(root);
+			_end->right = TNULL;
+			_end = _end->right;
+			//std::cout << "efhuefuwfg\n";
+		}
+		else {
 			_end = root;
+		}
 	}
 
 	bool erase(Key data) {
@@ -361,6 +360,9 @@ class RedBlackTree {
 			return false;
 		}
 		deleteNode(data);
+		//std::cout << "ROOT LOL " << root->data.second << std::endl;
+		
+		//printTree();
 		return true;
 	}
 
@@ -394,6 +396,10 @@ class RedBlackTree {
 
 	void	setEnd() {
 		_end = maximum(root)->right;
+	}
+
+	size_t	maxSize() const {
+		return _alloc_node.max_size();
 	}
 
 	void		swap( RedBlackTree & rhs) {

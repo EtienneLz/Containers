@@ -13,7 +13,7 @@
 namespace ft
 {
 
-template <typename Key, typename T, typename Compare = less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
+template <typename Key, typename T, typename Compare = less<Key>, typename Alloc = std::allocator<pair<const Key, T> > >
 class map
 {
 	public:
@@ -77,10 +77,11 @@ class map
 		template <class InputIterator>
 			map (InputIterator first, InputIterator last,
 			const key_compare& comp = key_compare(),
-			const allocator_type& alloc = allocator_type());
+			const allocator_type& alloc = allocator_type()): _alloc(alloc), _comp(comp) {
+				insert(first, last);
+			}
 
-		map (const map& x): _comp(x._comp), _alloc(x._alloc)
-		{
+		map (const map& x): _alloc(x._alloc),  _comp(x._comp) {
 			insert(x.begin(), x.end());
 		}
 
@@ -107,10 +108,14 @@ class map
 			rend
 		*/
 		iterator begin() {
+			if (_tree.get_size() == 0)
+				return iterator(_tree.getRoot());
 			return iterator(_tree.minimum(_tree.getRoot()));
 		}
 		
 		const_iterator begin() const {
+			if (_tree.get_size() == 0)
+				return const_iterator(_tree.getRoot());
 			return const_iterator(_tree.minimum(_tree.getRoot()));
 		}
 
@@ -156,7 +161,7 @@ class map
 		}
 
 		size_type max_size() const {
-			return _alloc.max_size();
+			return _tree.maxSize();
 		}
 		/*
 			ELEMENT ACCESS

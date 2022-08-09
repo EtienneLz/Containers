@@ -58,8 +58,7 @@ namespace ft {
 		}
 
 		bidirectional_iterator    operator--(int) {
-			bidirectional_iterator tmp;
-			tmp._point = _point;
+			bidirectional_iterator tmp(*this);
 			_point = predecessor(_point);
 
 			return tmp;

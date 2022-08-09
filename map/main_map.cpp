@@ -409,4 +409,9 @@ std::cout << std::endl;
   	for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
     	std::cout << it->first << " => " << it->second << '\n';
 }
+{
+	map<char,int> mymap;
+	map<char,int>::iterator it=mymap.begin();
+	(void)it;
+}
 }
