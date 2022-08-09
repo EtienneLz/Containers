@@ -374,7 +374,7 @@ std::cout << std::endl;
 
   	foo['x']=100;
   	foo['y']=200;
-													//C ICI QUE CA BUG C GRANDS MORTS
+												
   	bar['a']=11;
   	bar['b']=22;
   	bar['c']=33;
