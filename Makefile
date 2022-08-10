@@ -14,18 +14,20 @@ NAME		=	containers
 #               SOURCES              #
 # ################################## #
 # SRC_DIR		= 	./
-SRC_VECTOR	=	vector/main_vector.cpp
-SRC_STACK	=	stack/main_stack.cpp
-SRC_MAP		=	map/main_map.cpp
-SRC_TIME_MAP = map/time_benchmark_map.cpp
+SRC_VECTOR		=	vector/main_vector.cpp
+SRC_STACK		=	stack/main_stack.cpp
+SRC_MAP			=	map/main_map.cpp
+SRC_TIME_MAP 	= 	map/time_benchmark_map.cpp
+SRC_TIME_VECTOR	= 	vector/time_benchmark_vector.cpp
 
 # ################################## #
 #               OBJECTS              #
 # ################################## #
-OBJ_VECTOR	:=	${SRC_VECTOR:.cpp=.o}
-OBJ_MAP		:=	${SRC_MAP:.cpp=.o}
-OBJ_STACK	:=	${SRC_STACK:.cpp=.o}
-OBJ_TIME_MAP :=	${SRC_TIME_MAP:.cpp=.o}
+OBJ_VECTOR		:=	${SRC_VECTOR:.cpp=.o}
+OBJ_MAP			:=	${SRC_MAP:.cpp=.o}
+OBJ_STACK		:=	${SRC_STACK:.cpp=.o}
+OBJ_TIME_MAP 	:=	${SRC_TIME_MAP:.cpp=.o}
+OBJ_TIME_VECTOR :=	${SRC_TIME_VECTOR:.cpp=.o}
 
 # ################################## #
 #                FLAGS               #
@@ -68,12 +70,16 @@ time_map: ${OBJ_TIME_MAP}
 		$(CC) ${CFLAGS} -o ft_time_map ${SRC_TIME_MAP}
 		$(CC) ${CFLAGS} -D STD -o std_time_map ${SRC_TIME_MAP}
 
+time_vector: ${OBJ_TIME_VECTOR}
+		$(CC) ${CFLAGS} -o ft_time_vector ${SRC_TIME_VECTOR}
+		$(CC) ${CFLAGS} -D STD -o std_time_vector ${SRC_TIME_VECTOR}
+
 clean:
 	${RM} ${OBJ_VECTOR} ${OBJ_STACK} ${OBJ_MAP}
 
 fclean: clean
-	${RM} ${NAME} ${OBJ_TIME_MAP}
-	${RM} ft_map std_map ft_vector std_vector ft_stack std_stack ft_set std_set std_time_map ft_time_map
+	${RM} ${NAME} ${OBJ_TIME_MAP} ${OBJ_TIME_VECTOR}
+	${RM} ft_map std_map ft_vector std_vector ft_stack std_stack ft_set std_set std_time_map ft_time_map ft_time_vector std_time_vector
 
 re: clean all
 

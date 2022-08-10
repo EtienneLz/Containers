@@ -188,18 +188,12 @@ void lower_upper_bound_bench()
     NAMESPACE::map<int,std::string> test;
 
     for (int i = 0; i < NB_OF_ELEMENTS ;i++)
-    {
         test.insert(NAMESPACE::make_pair(i * 2, "poisson"));
-    }
 
     for (int i = 0; i < NB_OF_ELEMENTS * 2 ;i++)
-    {
         test.lower_bound(i);
-    }
     for (int i = 0; i < NB_OF_ELEMENTS * 2 ;i++)
-    {
         test.upper_bound(i);
-    }
 }
 int main()
 {

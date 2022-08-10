@@ -3,30 +3,27 @@
 
 namespace ft
 {
-template <class InputIterator1, class InputIterator2>
-bool			equal( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
-{
-	while (first1 != last1)
-	{
-		if (!(*first1 == *first2))
-			return false;
-		first1++;
-		first2++;
-	}
-	return true;
+
+template <class Iterator1, class Iterator2>
+bool equal (Iterator1 start1, Iterator1 end1, Iterator2 start2) {
+    while (start1 != end1) {
+        if ((*start1) != (*start2))
+            return false;
+        start1++;
+        start2++;
+    }
+    return true;
 }
 
-template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-bool			equal( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred )
-{
-	while (first1 != last1)
-	{
-		if (!(pred(*first1, *first2)))
-			return false;
-		first1++;
-		first2++;
-	}
-	return true;
+template <class Iterator1, class Iterator2, class Compare>
+bool equal (Iterator1 start1, Iterator1 end1, Iterator2 start2, Compare comp) {
+    while (start1 != end1) {
+        if (comp(*start1, *start2) == false)
+            return false;
+        start1++;
+        start2++;
+    }
+    return true;
 }
 };
 
